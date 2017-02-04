@@ -3,21 +3,20 @@ package com.sample.share.module.third.signin;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.okandroid.boot.lang.Log;
 import com.okandroid.boot.util.IOUtil;
 import com.okandroid.boot.util.ViewUtil;
 import com.okandroid.share.ShareHelper;
+import com.okandroid.share.util.ShareUtil;
 import com.sample.share.R;
 import com.sample.share.app.BaseActivity;
-import com.sina.weibo.sdk.api.share.BaseResponse;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
-import com.sina.weibo.sdk.exception.WeiboException;
-import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.tauth.Tencent;
-import com.tencent.tauth.UiError;
 
 /**
  * Created by idonans on 2017/2/4.
@@ -35,7 +34,7 @@ public class ThirdSignInActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mShareHelper = new ShareHelper(this, new ShareAdapter());
+        mShareHelper = new ShareHelper(this, mAuthListener);
 
         setContentView(R.layout.sample_activity_third_sign_in);
 
@@ -144,35 +143,47 @@ public class ThirdSignInActivity extends BaseActivity {
         return true;
     }
 
-    private class ShareAdapter implements ShareHelper.IShareListener {
+    private ShareHelper.IShareListener mAuthListener = ShareUtil.newAuthListener(new ShareUtil.AuthListener() {
+
+        private static final String TAG = "ThirdSignInActivity#mAuthListener";
 
         @Override
-        public void onQQComplete(Object o) {
+        public void onQQAuthSuccess(@NonNull ShareUtil.QQAuthInfo info) {
+            Log.d(TAG + " onQQAuthSuccess access_token: " + info.access_token);
+        }
+
+        @Override
+        public void onQQAuthFail() {
+            Log.d(TAG + " onQQAuthFail");
+        }
+
+        @Override
+        public void onQQAuthCancel() {
+            Log.d(TAG + " onQQAuthCancel");
+        }
+
+        @Override
+        public void onWeixinAuthSuccess() {
 
         }
 
         @Override
-        public void onQQError(UiError uiError) {
+        public void onWeixinAuthFail() {
 
         }
 
         @Override
-        public void onQQCancel() {
+        public void onWeixinAuthCancel() {
 
         }
 
         @Override
-        public void onWeixinCallback(BaseResp baseResp) {
+        public void onWeiboAuthSuccess() {
 
         }
 
         @Override
-        public void onWeiboAuthComplete(Bundle bundle) {
-
-        }
-
-        @Override
-        public void onWeiboAuthException(WeiboException e) {
+        public void onWeiboAuthFail() {
 
         }
 
@@ -180,11 +191,6 @@ public class ThirdSignInActivity extends BaseActivity {
         public void onWeiboAuthCancel() {
 
         }
-
-        @Override
-        public void onWeiboShareCallback(BaseResponse baseResponse) {
-
-        }
-    }
+    });
 
 }
