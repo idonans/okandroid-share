@@ -13,7 +13,19 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        debug {
+            storeFile rootProject.file('debug_keystore.jks')
+            storePassword property("debug_keystore.store_password")
+            keyAlias property("debug_keystore.key_alias")
+            keyPassword property("debug_keystore.key_password")
+        }
+    }
+
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
