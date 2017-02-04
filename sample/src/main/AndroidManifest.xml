@@ -9,10 +9,34 @@
         android:supportsRtl="true"
         android:theme="@style/SampleTheme"
         tools:replace="android:theme">
-        <activity android:name="com.sample.share.module.main.MainActivity">
+        <activity android:name="com.sample.share.module.main.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.sample.share.module.third.signin.ThirdSignInActivity"
+            android:exported="false"/>
+        <activity android:name="com.sample.share.module.third.share.ThirdShareActivity"
+            android:exported="false"/>
+        <activity android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="***"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.tencent.tauth.AuthActivity"
+            android:exported="true"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="tencent***"/>
             </intent-filter>
         </activity>
     </application>

@@ -7,13 +7,17 @@
         android:layout_marginTop="@dimen/okandroid_status_bar_height"
         android:orientation="vertical"
         android:padding="10dp">
-        <Button android:id="@+id/sign_in"
+        <Button android:id="@+id/qq"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="第三方登录测试"/>
-        <Button android:id="@+id/share"
+            android:text="sign in with QQ"/>
+        <Button android:id="@+id/weixin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="第三方分享测试"/>
+            android:text="sign in with weixin"/>
+        <Button android:id="@+id/weibo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="sign in with weibo"/>
     </LinearLayout>
 </com.okandroid.boot.widget.ContentView>

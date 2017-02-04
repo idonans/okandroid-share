@@ -9,6 +9,7 @@ import com.okandroid.boot.data.ProcessManager;
 import com.okandroid.boot.data.StorageManager;
 import com.okandroid.boot.lang.Log;
 import com.okandroid.boot.thread.Threads;
+import com.okandroid.share.ShareConfig;
 
 /**
  * Created by idonans on 2017/2/1.
@@ -41,6 +42,12 @@ public class AppInit {
         if (!ProcessManager.getInstance().isMainProcess()) {
             return;
         }
+
+        new ShareConfig.Builder()
+                .setQQ("1")
+                .setWeixin("1")
+                .setWeibo("1")
+                .init();
 
         Threads.postBackground(new Runnable() {
             @Override
