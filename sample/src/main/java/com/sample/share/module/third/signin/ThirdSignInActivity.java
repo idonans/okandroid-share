@@ -111,10 +111,6 @@ public class ThirdSignInActivity extends BaseActivity {
             return false;
         }
 
-        if (!isAppCompatResumed()) {
-            return false;
-        }
-
         if (mShareHelper == null) {
             return false;
         }
@@ -132,14 +128,6 @@ public class ThirdSignInActivity extends BaseActivity {
     }
 
     private boolean signInWithWeibo() {
-        if (!isAppCompatResumed()) {
-            return false;
-        }
-
-        if (!isAppCompatResumed()) {
-            return false;
-        }
-
         if (!isAppCompatResumed()) {
             return false;
         }
