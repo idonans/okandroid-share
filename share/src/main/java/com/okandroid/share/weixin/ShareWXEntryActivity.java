@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.okandroid.boot.AppContext;
 import com.okandroid.share.ShareConfig;
-import com.okandroid.share.app.BaseActivity;
+import com.okandroid.share.app.ShareActivity;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
@@ -13,7 +13,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
  * 与微信通信页
  * Created by idonans on 2017/2/4.
  */
-public class ShareWXEntryActivity extends BaseActivity {
+public class ShareWXEntryActivity extends ShareActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

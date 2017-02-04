@@ -1,4 +1,4 @@
-package com.okandroid.share.app;
+package com.sample.share.app;
 
 import com.okandroid.boot.app.OKAndroidActivity;
 
@@ -7,5 +7,4 @@ import com.okandroid.boot.app.OKAndroidActivity;
  */
 
 public class BaseActivity extends OKAndroidActivity {
-
 }

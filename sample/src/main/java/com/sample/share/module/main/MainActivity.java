@@ -1,11 +1,11 @@
 package com.sample.share.module.main;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.sample.share.R;
+import com.sample.share.app.BaseActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
