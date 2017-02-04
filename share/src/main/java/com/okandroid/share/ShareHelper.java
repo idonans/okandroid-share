@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
 import com.okandroid.boot.util.IOUtil;
 import com.okandroid.share.qq.ShareQQHelper;
@@ -13,7 +12,7 @@ import com.okandroid.share.weixin.ShareWeixinHelper;
 import com.sina.weibo.sdk.api.share.BaseResponse;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.exception.WeiboException;
-import com.tencent.mm.sdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.UiError;
 
@@ -33,15 +32,15 @@ public class ShareHelper implements Closeable {
     public ShareHelper(@NonNull Activity activity, @NonNull IShareListener listener) {
         mActivity = activity;
 
-        if (hasConfigQQ()) {
+        if (ShareConfig.hasConfigQQ()) {
             mShareQQHelper = new ShareQQHelper(new IShareQQUiListenerAdapter(listener));
         }
 
-        if (hasConfigWeixin()) {
+        if (ShareConfig.hasConfigWeixin()) {
             mShareWeixinHelper = new ShareWeixinHelper(new IShareWeixinListenerAdapter(listener));
         }
 
-        if (hasConfigWeibo()) {
+        if (ShareConfig.hasConfigWeibo()) {
             mShareWeiboHelper = new ShareWeiboHelper(activity,
                     new IShareWeiboAuthListenerAdapter(listener),
                     new IShareWeiboShareListenerAdapter(listener));
@@ -193,17 +192,6 @@ public class ShareHelper implements Closeable {
         void onWeiboShareCallback(BaseResponse baseResponse);
     }
 
-    private static boolean hasConfigQQ() {
-        return !TextUtils.isEmpty(ShareConfig.getQQAppId());
-    }
-
-    private static boolean hasConfigWeixin() {
-        return !TextUtils.isEmpty(ShareConfig.getWeixinAppKey());
-    }
-
-    private static boolean hasConfigWeibo() {
-        return !TextUtils.isEmpty(ShareConfig.getWeiboAppKey());
-    }
 
     public static class SimpleIShareListener implements IShareListener {
 
