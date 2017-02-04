@@ -26,7 +26,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.okandroid.boot:boot:0.1.14'
+    compile 'com.okandroid.boot:boot:0.1.15'
 }
 
 apply from: rootProject.file('gradle/jcenter_push.gradle')
