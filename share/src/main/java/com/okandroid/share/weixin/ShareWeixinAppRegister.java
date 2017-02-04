@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.okandroid.boot.AppContext;
 import com.okandroid.share.ShareConfig;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -17,9 +18,10 @@ public class ShareWeixinAppRegister extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (ShareConfig.hasConfigWeixin()) {
-            final IWXAPI api = WXAPIFactory.createWXAPI(context, null);
+            IWXAPI api = WXAPIFactory.createWXAPI(AppContext.getContext(), ShareConfig.getWeixinAppKey(), false);
             api.registerApp(ShareConfig.getWeixinAppKey());
         }
+
     }
 
 }
