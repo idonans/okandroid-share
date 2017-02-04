@@ -1,12 +1,12 @@
-package com.idonans.ishare.qq;
+package com.okandroid.share.qq;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 
-import com.idonans.ishare.IShareConfig;
 import com.okandroid.boot.AppContext;
+import com.okandroid.share.ShareConfig;
 import com.tencent.connect.common.Constants;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
@@ -19,13 +19,13 @@ import java.io.IOException;
  * QQ 登陆分享，Qzone 分享
  * Created by idonans on 2017/2/4.
  */
-public final class IShareQQHelper implements Closeable {
+public final class ShareQQHelper implements Closeable {
 
     private final Tencent mTencent;
     private final IUiListenerAdapter mListener;
 
-    public IShareQQHelper(IUiListener listener) {
-        mTencent = Tencent.createInstance(IShareConfig.getQQAppId(), AppContext.getContext());
+    public ShareQQHelper(IUiListener listener) {
+        mTencent = Tencent.createInstance(ShareConfig.getQQAppId(), AppContext.getContext());
         mListener = new IUiListenerAdapter();
         mListener.setOutListener(listener);
     }

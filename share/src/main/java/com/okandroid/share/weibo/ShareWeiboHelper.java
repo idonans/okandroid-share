@@ -1,4 +1,4 @@
-package com.idonans.ishare.weibo;
+package com.okandroid.share.weibo;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 
-import com.idonans.ishare.IShareConfig;
 import com.okandroid.boot.lang.Log;
+import com.okandroid.share.ShareConfig;
 import com.sina.weibo.sdk.api.share.BaseResponse;
 import com.sina.weibo.sdk.api.share.IWeiboHandler;
 import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
@@ -25,7 +25,7 @@ import java.lang.reflect.Field;
  * 微博登陆分享
  * Created by idonans on 2017/2/4.
  */
-public final class IShareWeiboHelper implements Closeable {
+public final class ShareWeiboHelper implements Closeable {
 
     private final Activity mActivity;
     private final WeiboAuthListenerAdapter mListener;
@@ -36,12 +36,12 @@ public final class IShareWeiboHelper implements Closeable {
     private final IWeiboShareAPI mIWeiboShareAPI;
     private final WeiboShareListenerAdapter mShareListenerAdapter;
 
-    public IShareWeiboHelper(Activity activity, WeiboAuthListener listener, WeiboShareListener shareListener) {
+    public ShareWeiboHelper(Activity activity, WeiboAuthListener listener, WeiboShareListener shareListener) {
         mActivity = activity;
         mListener = new WeiboAuthListenerAdapter();
         mListener.setOutListener(listener);
 
-        mAuthInfo = new AuthInfo(activity, IShareConfig.getWeiboAppKey(), IShareConfig.getWeiboRedirectUrl(), null);
+        mAuthInfo = new AuthInfo(activity, ShareConfig.getWeiboAppKey(), ShareConfig.getWeiboRedirectUrl(), null);
         mSsoHandler = new SsoHandler(activity, mAuthInfo);
 
         // fix sdk bug: sso 客户端授权时，如果当前 app 被回收，需要恢复参数. 注意需要避免这些参数被混淆
@@ -62,7 +62,7 @@ public final class IShareWeiboHelper implements Closeable {
 
         mShareListenerAdapter = new WeiboShareListenerAdapter();
         mShareListenerAdapter.setOutListener(shareListener);
-        mIWeiboShareAPI = WeiboShareSDK.createWeiboAPI(activity, IShareConfig.getWeiboAppKey(), false);
+        mIWeiboShareAPI = WeiboShareSDK.createWeiboAPI(activity, ShareConfig.getWeiboAppKey(), false);
         mIWeiboShareAPI.registerApp();
     }
 

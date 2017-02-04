@@ -1,10 +1,10 @@
-package com.idonans.ishare;
+package com.okandroid.share;
 
 /**
- * 配置 ishare 第三方平台参数, 在 App 入口处配置
+ * 配置第三方平台参数, 在 App 入口处配置. 通常只需要在主进程 (ui 所在进程) 中配置.
  * Created by idonans on 2017/2/4.
  */
-public final class IShareConfig {
+public final class ShareConfig {
 
     private static String sQQAppId;
     private static String sQQAppKey;
@@ -91,7 +91,7 @@ public final class IShareConfig {
         }
 
         public void init() {
-            IShareConfig.init(this);
+            ShareConfig.init(this);
         }
     }
 

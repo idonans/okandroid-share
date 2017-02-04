@@ -1,4 +1,4 @@
-package com.idonans.ishare;
+package com.okandroid.share;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.idonans.ishare.qq.IShareQQHelper;
-import com.idonans.ishare.weibo.IShareWeiboHelper;
-import com.idonans.ishare.weixin.IShareWeixinHelper;
 import com.okandroid.boot.util.IOUtil;
+import com.okandroid.share.qq.ShareQQHelper;
+import com.okandroid.share.weibo.ShareWeiboHelper;
+import com.okandroid.share.weixin.ShareWeixinHelper;
 import com.sina.weibo.sdk.api.share.BaseResponse;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.exception.WeiboException;
@@ -23,26 +23,26 @@ import java.io.IOException;
 /**
  * Created by idonans on 2017/2/4.
  */
-public class IShareHelper implements Closeable {
+public class ShareHelper implements Closeable {
 
     private Activity mActivity;
-    private IShareQQHelper mIShareQQHelper;
-    private IShareWeixinHelper mIShareWeixinHelper;
-    private IShareWeiboHelper mIShareWeiboHelper;
+    private ShareQQHelper mShareQQHelper;
+    private ShareWeixinHelper mShareWeixinHelper;
+    private ShareWeiboHelper mShareWeiboHelper;
 
-    public IShareHelper(@NonNull Activity activity, @NonNull IShareListener listener) {
+    public ShareHelper(@NonNull Activity activity, @NonNull IShareListener listener) {
         mActivity = activity;
 
         if (hasConfigQQ()) {
-            mIShareQQHelper = new IShareQQHelper(new IShareQQUiListenerAdapter(listener));
+            mShareQQHelper = new ShareQQHelper(new IShareQQUiListenerAdapter(listener));
         }
 
         if (hasConfigWeixin()) {
-            mIShareWeixinHelper = new IShareWeixinHelper(new IShareWeixinListenerAdapter(listener));
+            mShareWeixinHelper = new ShareWeixinHelper(new IShareWeixinListenerAdapter(listener));
         }
 
         if (hasConfigWeibo()) {
-            mIShareWeiboHelper = new IShareWeiboHelper(activity,
+            mShareWeiboHelper = new ShareWeiboHelper(activity,
                     new IShareWeiboAuthListenerAdapter(listener),
                     new IShareWeiboShareListenerAdapter(listener));
         }
@@ -52,46 +52,46 @@ public class IShareHelper implements Closeable {
         return mActivity;
     }
 
-    public IShareQQHelper getIShareQQHelper() {
-        return mIShareQQHelper;
+    public ShareQQHelper getShareQQHelper() {
+        return mShareQQHelper;
     }
 
-    public IShareWeixinHelper getIShareWeixinHelper() {
-        return mIShareWeixinHelper;
+    public ShareWeixinHelper getShareWeixinHelper() {
+        return mShareWeixinHelper;
     }
 
-    public IShareWeiboHelper getIShareWeiboHelper() {
-        return mIShareWeiboHelper;
+    public ShareWeiboHelper getShareWeiboHelper() {
+        return mShareWeiboHelper;
     }
 
     public void resume() {
-        if (mIShareWeixinHelper != null) {
-            mIShareWeixinHelper.resume();
+        if (mShareWeixinHelper != null) {
+            mShareWeixinHelper.resume();
         }
 
-        if (mIShareWeiboHelper != null) {
-            mIShareWeiboHelper.resume();
+        if (mShareWeiboHelper != null) {
+            mShareWeiboHelper.resume();
         }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (mIShareQQHelper != null) {
-            if (mIShareQQHelper.onActivityResult(requestCode, resultCode, data)) {
+        if (mShareQQHelper != null) {
+            if (mShareQQHelper.onActivityResult(requestCode, resultCode, data)) {
                 return;
             }
         }
 
-        if (mIShareWeiboHelper != null) {
-            mIShareWeiboHelper.onActivityResult(requestCode, resultCode, data);
+        if (mShareWeiboHelper != null) {
+            mShareWeiboHelper.onActivityResult(requestCode, resultCode, data);
         }
     }
 
     @Override
     public void close() throws IOException {
         mActivity = null;
-        IOUtil.closeQuietly(mIShareQQHelper);
-        IOUtil.closeQuietly(mIShareWeixinHelper);
-        IOUtil.closeQuietly(mIShareWeiboHelper);
+        IOUtil.closeQuietly(mShareQQHelper);
+        IOUtil.closeQuietly(mShareWeixinHelper);
+        IOUtil.closeQuietly(mShareWeiboHelper);
     }
 
     private static class IShareQQUiListenerAdapter implements IUiListener {
@@ -119,7 +119,7 @@ public class IShareHelper implements Closeable {
         }
     }
 
-    private static class IShareWeixinListenerAdapter implements IShareWeixinHelper.IWXListener {
+    private static class IShareWeixinListenerAdapter implements ShareWeixinHelper.IWXListener {
 
         @NonNull
         private final IShareListener mOutListener;
@@ -159,7 +159,7 @@ public class IShareHelper implements Closeable {
         }
     }
 
-    private static class IShareWeiboShareListenerAdapter implements IShareWeiboHelper.WeiboShareListener {
+    private static class IShareWeiboShareListenerAdapter implements ShareWeiboHelper.WeiboShareListener {
 
         @NonNull
         private final IShareListener mOutListener;
@@ -194,15 +194,15 @@ public class IShareHelper implements Closeable {
     }
 
     private static boolean hasConfigQQ() {
-        return !TextUtils.isEmpty(IShareConfig.getQQAppId());
+        return !TextUtils.isEmpty(ShareConfig.getQQAppId());
     }
 
     private static boolean hasConfigWeixin() {
-        return !TextUtils.isEmpty(IShareConfig.getWeixinAppKey());
+        return !TextUtils.isEmpty(ShareConfig.getWeixinAppKey());
     }
 
     private static boolean hasConfigWeibo() {
-        return !TextUtils.isEmpty(IShareConfig.getWeiboAppKey());
+        return !TextUtils.isEmpty(ShareConfig.getWeiboAppKey());
     }
 
     public static class SimpleIShareListener implements IShareListener {

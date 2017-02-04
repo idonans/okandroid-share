@@ -1,9 +1,8 @@
-package com.idonans.ishare.weixin.wxapi;
+package com.okandroid.share.weixin;
 
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.idonans.ishare.weixin.IShareWeixinHelper;
 import com.okandroid.boot.util.IOUtil;
 import com.okandroid.share.app.BaseActivity;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -12,14 +11,14 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
  * 与微信通信页
  * Created by idonans on 2017/2/4.
  */
-public class IShareWXEntryActivity extends BaseActivity {
+public class ShareWXEntryActivity extends BaseActivity {
 
-    private IShareWeixinHelper mIShareWeixinHelper;
+    private ShareWeixinHelper mShareWeixinHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mIShareWeixinHelper = new IShareWeixinHelper(null);
+        mShareWeixinHelper = new ShareWeixinHelper(null);
         handleIntent(getIntent());
         finish();
     }
@@ -32,16 +31,16 @@ public class IShareWXEntryActivity extends BaseActivity {
     }
 
     private void handleIntent(Intent intent) {
-        IWXAPI api = mIShareWeixinHelper.getApi();
+        IWXAPI api = mShareWeixinHelper.getApi();
         if (api != null) {
-            api.handleIntent(intent, IShareWeixinHelper.getGlobalWXAPIEventHandler());
+            api.handleIntent(intent, ShareWeixinHelper.getGlobalWXAPIEventHandler());
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        IOUtil.closeQuietly(mIShareWeixinHelper);
+        IOUtil.closeQuietly(mShareWeixinHelper);
     }
 
 }
