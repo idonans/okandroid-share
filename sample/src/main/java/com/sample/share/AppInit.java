@@ -45,7 +45,7 @@ public class AppInit {
 
         new ShareConfig.Builder()
                 .setQQ("1105599231")
-                .setWeixin("1")
+                .setWeixin("1", "2")
                 .setWeibo("1")
                 .init();
 
