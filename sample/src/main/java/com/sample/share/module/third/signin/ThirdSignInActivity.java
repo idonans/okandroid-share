@@ -13,10 +13,6 @@ import com.okandroid.share.ShareHelper;
 import com.okandroid.share.util.ShareUtil;
 import com.sample.share.R;
 import com.sample.share.app.BaseActivity;
-import com.sina.weibo.sdk.auth.sso.SsoHandler;
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.tauth.Tencent;
 
 /**
  * Created by idonans on 2017/2/4.
@@ -92,17 +88,7 @@ public class ThirdSignInActivity extends BaseActivity {
             return false;
         }
 
-        if (mShareHelper == null) {
-            return false;
-        }
-
-        Tencent tencent = mShareHelper.getShareQQHelper().getTencent(this);
-        if (tencent == null) {
-            return false;
-        }
-
-        tencent.login(this, "get_simple_userinfo", mShareHelper.getShareQQHelper().getListener());
-        return true;
+        return ShareUtil.requestQQAuth(mShareHelper);
     }
 
     private boolean signInWithWeixin() {
@@ -110,20 +96,7 @@ public class ThirdSignInActivity extends BaseActivity {
             return false;
         }
 
-        if (mShareHelper == null) {
-            return false;
-        }
-
-        IWXAPI api = mShareHelper.getShareWeixinHelper().getApi();
-        if (api == null) {
-            return false;
-        }
-
-        SendAuth.Req req = new SendAuth.Req();
-        req.scope = "snsapi_userinfo";
-        req.state = mShareHelper.getShareWeixinHelper().getState();
-        api.sendReq(req);
-        return true;
+        return ShareUtil.requestWeixinAuth(mShareHelper);
     }
 
     private boolean signInWithWeibo() {
@@ -131,16 +104,7 @@ public class ThirdSignInActivity extends BaseActivity {
             return false;
         }
 
-        if (mShareHelper == null) {
-            return false;
-        }
-
-        SsoHandler ssoHandler = mShareHelper.getShareWeiboHelper().getSsoHandler();
-        if (ssoHandler == null) {
-            return false;
-        }
-        ssoHandler.authorize(mShareHelper.getShareWeiboHelper().getListener());
-        return true;
+        return ShareUtil.requestWeiboAuth(mShareHelper);
     }
 
     private ShareHelper.IShareListener mAuthListener = ShareUtil.newAuthListener(new ShareUtil.AuthListener() {
@@ -164,32 +128,32 @@ public class ThirdSignInActivity extends BaseActivity {
 
         @Override
         public void onWeixinAuthSuccess() {
-
+            Log.d(TAG + " onWeixinAuthSuccess");
         }
 
         @Override
         public void onWeixinAuthFail() {
-
+            Log.d(TAG + " onWeixinAuthFail");
         }
 
         @Override
         public void onWeixinAuthCancel() {
-
+            Log.d(TAG + " onWeixinAuthCancel");
         }
 
         @Override
         public void onWeiboAuthSuccess() {
-
+            Log.d(TAG + " onWeiboAuthSuccess");
         }
 
         @Override
         public void onWeiboAuthFail() {
-
+            Log.d(TAG + " onWeiboAuthFail");
         }
 
         @Override
         public void onWeiboAuthCancel() {
-
+            Log.d(TAG + " onWeiboAuthCancel");
         }
     });
 
