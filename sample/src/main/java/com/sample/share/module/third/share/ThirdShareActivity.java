@@ -41,6 +41,14 @@ public class ThirdShareActivity extends BaseActivity {
             }
         });
 
+        View shareWithQzone = ViewUtil.findViewByID(this, R.id.qzone);
+        shareWithQzone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareWithQzone();
+            }
+        });
+
         View shareWithWeixin = ViewUtil.findViewByID(this, R.id.weixin);
         shareWithWeixin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,8 +100,20 @@ public class ThirdShareActivity extends BaseActivity {
         shareContent.content = "qq share content";
         shareContent.image = "https://avatars3.githubusercontent.com/u/4043830?v=3&s=460";
         shareContent.targetUrl = "https://github.com/idonans/okandroid-share";
-        ShareUtil.shareToQQ(mShareHelper, shareContent);
-        return true;
+        return ShareUtil.shareToQQ(mShareHelper, shareContent);
+    }
+
+    private boolean shareWithQzone() {
+        if (!isAppCompatResumed()) {
+            return false;
+        }
+
+        ShareUtil.QzoneShareContent shareContent = new ShareUtil.QzoneShareContent();
+        shareContent.title = "qq share title";
+        shareContent.content = "qq share content";
+        shareContent.image = "https://avatars3.githubusercontent.com/u/4043830?v=3&s=460";
+        shareContent.targetUrl = "https://github.com/idonans/okandroid-share";
+        return ShareUtil.shareToQzone(mShareHelper, shareContent);
     }
 
     private boolean shareWithWeixin() {

@@ -8,9 +8,12 @@ import com.okandroid.share.ShareHelper;
 import com.sina.weibo.sdk.api.share.BaseResponse;
 import com.sina.weibo.sdk.exception.WeiboException;
 import com.tencent.connect.share.QQShare;
+import com.tencent.connect.share.QzoneShare;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
+
+import java.util.ArrayList;
 
 /**
  * Created by idonans on 2017/2/6.
@@ -68,6 +71,58 @@ public class ShareUtil {
         }
 
         tencent.shareToQQ(shareHelper.getActivity(), toQQShareContent(shareContent), shareHelper.getShareQQHelper().getListener());
+        return true;
+    }
+
+    public static class QzoneShareContent {
+
+        public String title;
+        public String content;
+        /**
+         * 点击链接
+         */
+        public String targetUrl;
+        /**
+         * 分享的图片，本地或者网络地址(本地图片有尺寸限制)
+         */
+        public String image;
+    }
+
+    private static Bundle toQzoneShareContent(QzoneShareContent shareContent) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
+        if (!TextUtils.isEmpty(shareContent.title)) {
+            bundle.putString(QzoneShare.SHARE_TO_QQ_TITLE, shareContent.title);
+        }
+        if (!TextUtils.isEmpty(shareContent.content)) {
+            bundle.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, shareContent.content);
+        }
+        if (!TextUtils.isEmpty(shareContent.targetUrl)) {
+            bundle.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, shareContent.targetUrl);
+        }
+        if (!TextUtils.isEmpty(shareContent.image)) {
+            ArrayList<String> images = new ArrayList<>();
+            images.add(shareContent.image);
+            bundle.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, images);
+        }
+        return bundle;
+    }
+
+    public static boolean shareToQzone(ShareHelper shareHelper, QzoneShareContent shareContent) {
+        if (shareHelper == null) {
+            return false;
+        }
+
+        if (shareContent == null) {
+            return false;
+        }
+
+        Tencent tencent = shareHelper.getShareQQHelper().getTencent(shareHelper.getActivity());
+        if (tencent == null) {
+            return false;
+        }
+
+        tencent.shareToQzone(shareHelper.getActivity(), toQzoneShareContent(shareContent), shareHelper.getShareQQHelper().getListener());
         return true;
     }
 
