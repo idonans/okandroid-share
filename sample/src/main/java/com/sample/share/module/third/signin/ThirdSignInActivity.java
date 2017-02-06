@@ -142,8 +142,8 @@ public class ThirdSignInActivity extends BaseActivity {
         }
 
         @Override
-        public void onWeiboAuthSuccess() {
-            Log.d(TAG + " onWeiboAuthSuccess");
+        public void onWeiboAuthSuccess(@NonNull ShareUtil.WeiboAuthInfo info) {
+            Log.d(TAG + " onWeiboAuthSuccess access_token: " + info.access_token);
         }
 
         @Override

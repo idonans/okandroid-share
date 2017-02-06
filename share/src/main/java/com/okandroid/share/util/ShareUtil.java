@@ -82,7 +82,7 @@ public class ShareUtil {
 
         void onWeixinAuthCancel();
 
-        void onWeiboAuthSuccess();
+        void onWeiboAuthSuccess(@NonNull WeiboAuthInfo info);
 
         void onWeiboAuthFail();
 
@@ -90,17 +90,25 @@ public class ShareUtil {
     }
 
     public static class QQAuthInfo {
-        public int ret;
+        public String ret;
         public String pay_token;
         public String pf;
-        public int query_authority_cost;
-        public int authority_cost;
-        public long expires_in;
+        public String query_authority_cost;
+        public String authority_cost;
+        public String expires_in;
         public String openid;
         public String pfkey;
         public String msg;
-        public int login_cost;
+        public String login_cost;
         public String access_token;
+    }
+
+    public static class WeiboAuthInfo {
+        public String access_token;
+        public String refresh_token;
+        public String expires_in;
+        public String uid;
+        public String remind_in;
     }
 
     public static ShareHelper.IShareListener newAuthListener(final AuthListener authListener) {
@@ -112,16 +120,16 @@ public class ShareUtil {
                 if (o instanceof JSONObject) {
                     JSONObject jsonObject = (JSONObject) o;
                     QQAuthInfo info = new QQAuthInfo();
-                    info.ret = jsonObject.optInt("ret");
+                    info.ret = jsonObject.optString("ret");
                     info.pay_token = jsonObject.optString("pay_token");
                     info.pf = jsonObject.optString("pf");
-                    info.query_authority_cost = jsonObject.optInt("query_authority_cost");
-                    info.authority_cost = jsonObject.optInt("authority_cost");
-                    info.expires_in = jsonObject.optLong("expires_in");
+                    info.query_authority_cost = jsonObject.optString("query_authority_cost");
+                    info.authority_cost = jsonObject.optString("authority_cost");
+                    info.expires_in = jsonObject.optString("expires_in");
                     info.openid = jsonObject.optString("openid");
                     info.pfkey = jsonObject.optString("pfkey");
                     info.msg = jsonObject.optString("msg");
-                    info.login_cost = jsonObject.optInt("login_cost");
+                    info.login_cost = jsonObject.optString("login_cost");
                     info.access_token = jsonObject.optString("access_token");
                     authListener.onQQAuthSuccess(info);
                 } else {
@@ -151,7 +159,13 @@ public class ShareUtil {
 
             @Override
             public void onWeiboAuthComplete(Bundle bundle) {
-                // TODO
+                WeiboAuthInfo info = new WeiboAuthInfo();
+                info.access_token = String.valueOf(bundle.get("access_token"));
+                info.refresh_token = String.valueOf(bundle.get("refresh_token"));
+                info.expires_in = String.valueOf(bundle.get("expires_in"));
+                info.uid = String.valueOf(bundle.get("uid"));
+                info.remind_in = String.valueOf(bundle.get("remind_in"));
+                authListener.onWeiboAuthSuccess(info);
             }
 
             @Override
