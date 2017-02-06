@@ -5,9 +5,14 @@ import android.text.TextUtils;
 
 import com.okandroid.boot.lang.Log;
 import com.okandroid.share.ShareHelper;
+import com.sina.weibo.sdk.api.WebpageObject;
+import com.sina.weibo.sdk.api.WeiboMessage;
 import com.sina.weibo.sdk.api.share.BaseResponse;
+import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
+import com.sina.weibo.sdk.api.share.SendMessageToWeiboRequest;
 import com.sina.weibo.sdk.constant.WBConstants;
 import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.utils.Utility;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -39,7 +44,7 @@ public class ShareUtil {
         public String image;
     }
 
-    private static Bundle toQQShareContent(QQShareContent shareContent) {
+    private static Bundle convertQQShareContent(QQShareContent shareContent) {
         Bundle bundle = new Bundle();
         bundle.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
         if (!TextUtils.isEmpty(shareContent.title)) {
@@ -71,7 +76,7 @@ public class ShareUtil {
             return false;
         }
 
-        tencent.shareToQQ(shareHelper.getActivity(), toQQShareContent(shareContent), shareHelper.getShareQQHelper().getListener());
+        tencent.shareToQQ(shareHelper.getActivity(), convertQQShareContent(shareContent), shareHelper.getShareQQHelper().getListener());
         return true;
     }
 
@@ -89,7 +94,7 @@ public class ShareUtil {
         public String image;
     }
 
-    private static Bundle toQzoneShareContent(QzoneShareContent shareContent) {
+    private static Bundle convertQzoneShareContent(QzoneShareContent shareContent) {
         Bundle bundle = new Bundle();
         bundle.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
         if (!TextUtils.isEmpty(shareContent.title)) {
@@ -123,7 +128,62 @@ public class ShareUtil {
             return false;
         }
 
-        tencent.shareToQzone(shareHelper.getActivity(), toQzoneShareContent(shareContent), shareHelper.getShareQQHelper().getListener());
+        tencent.shareToQzone(shareHelper.getActivity(), convertQzoneShareContent(shareContent), shareHelper.getShareQQHelper().getListener());
+        return true;
+    }
+
+    public static class WeiboShareContent {
+
+        public String title;
+        public String content;
+        /**
+         * 点击链接
+         */
+        public String targetUrl;
+        /**
+         * jpeg 格式, 不能超过 32k
+         */
+        public byte[] image;
+    }
+
+    private static WebpageObject convertWeiboShareContent(WeiboShareContent shareContent) {
+        WebpageObject mediaObject = new WebpageObject();
+        mediaObject.identify = Utility.generateGUID();
+        if (!TextUtils.isEmpty(shareContent.title)) {
+            mediaObject.title = shareContent.title;
+        }
+        if (!TextUtils.isEmpty(shareContent.content)) {
+            mediaObject.description = shareContent.content;
+        }
+        if (!TextUtils.isEmpty(shareContent.targetUrl)) {
+            mediaObject.actionUrl = shareContent.targetUrl;
+        }
+        if (shareContent.image != null && shareContent.image.length > 0) {
+            mediaObject.thumbData = shareContent.image;
+        }
+        return mediaObject;
+    }
+
+    public static boolean shareToWeibo(ShareHelper shareHelper, WeiboShareContent shareContent) {
+        if (shareHelper == null) {
+            return false;
+        }
+
+        if (shareContent == null) {
+            return false;
+        }
+
+        IWeiboShareAPI api = shareHelper.getShareWeiboHelper().getIWeiboShareAPI(false);
+        if (api == null) {
+            return false;
+        }
+
+        WeiboMessage weiboMessage = new WeiboMessage();
+        weiboMessage.mediaObject = convertWeiboShareContent(shareContent);
+        SendMessageToWeiboRequest request = new SendMessageToWeiboRequest();
+        request.transaction = Utility.generateGUID();
+        request.message = weiboMessage;
+        api.sendRequest(shareHelper.getActivity(), request);
         return true;
     }
 
