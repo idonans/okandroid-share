@@ -33,10 +33,6 @@ public class ShareUtil {
          * 分享的图片，本地或者网络地址(本地图片有尺寸限制)
          */
         public String image;
-        /**
-         * 分享内容中显示 来自 appName
-         */
-        public String appName;
     }
 
     private static Bundle toQQShareContent(QQShareContent shareContent) {
@@ -53,9 +49,6 @@ public class ShareUtil {
         }
         if (!TextUtils.isEmpty(shareContent.image)) {
             bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, shareContent.image);
-        }
-        if (!TextUtils.isEmpty(shareContent.appName)) {
-            bundle.putString(QQShare.SHARE_TO_QQ_APP_NAME, shareContent.appName);
         }
         return bundle;
     }
