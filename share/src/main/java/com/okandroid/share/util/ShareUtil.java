@@ -173,7 +173,7 @@ public class ShareUtil {
             return false;
         }
 
-        IWeiboShareAPI api = shareHelper.getShareWeiboHelper().getIWeiboShareAPI(false);
+        IWeiboShareAPI api = shareHelper.getShareWeiboHelper().getIWeiboShareAPI(true);
         if (api == null) {
             return false;
         }
@@ -183,8 +183,7 @@ public class ShareUtil {
         SendMessageToWeiboRequest request = new SendMessageToWeiboRequest();
         request.transaction = Utility.generateGUID();
         request.message = weiboMessage;
-        api.sendRequest(shareHelper.getActivity(), request);
-        return true;
+        return api.sendRequest(shareHelper.getActivity(), request);
     }
 
     public interface ShareListener {
