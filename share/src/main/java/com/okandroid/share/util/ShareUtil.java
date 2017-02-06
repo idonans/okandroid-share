@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.okandroid.boot.lang.Log;
 import com.okandroid.share.ShareHelper;
 import com.sina.weibo.sdk.api.share.BaseResponse;
+import com.sina.weibo.sdk.constant.WBConstants;
 import com.sina.weibo.sdk.exception.WeiboException;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
@@ -192,7 +193,25 @@ public class ShareUtil {
 
             @Override
             public void onWeiboShareCallback(BaseResponse baseResponse) {
-                // TODO
+                if (baseResponse == null) {
+                    Log.d(TAG + " onWeiboShareCallback but baseResponse is null");
+                    return;
+                }
+
+                switch (baseResponse.errCode) {
+                    case WBConstants.ErrorCode.ERR_OK:
+                        shareListener.onWeiboShareSuccess();
+                        break;
+                    case WBConstants.ErrorCode.ERR_FAIL:
+                        shareListener.onWeiboShareFail();
+                        break;
+                    case WBConstants.ErrorCode.ERR_CANCEL:
+                        shareListener.onWeiboShareCancel();
+                        break;
+                    default:
+                        Log.d(TAG + " onWeiboShareCallback but baseResponse errCode invalid " + baseResponse.errCode);
+                        break;
+                }
             }
         };
     }
