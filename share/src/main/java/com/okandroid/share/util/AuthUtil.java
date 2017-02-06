@@ -159,13 +159,17 @@ public class AuthUtil {
 
             @Override
             public void onWeiboAuthComplete(Bundle bundle) {
-                WeiboAuthInfo info = new WeiboAuthInfo();
-                info.access_token = String.valueOf(bundle.get("access_token"));
-                info.refresh_token = String.valueOf(bundle.get("refresh_token"));
-                info.expires_in = String.valueOf(bundle.get("expires_in"));
-                info.uid = String.valueOf(bundle.get("uid"));
-                info.remind_in = String.valueOf(bundle.get("remind_in"));
-                authListener.onWeiboAuthSuccess(info);
+                if (bundle != null) {
+                    WeiboAuthInfo info = new WeiboAuthInfo();
+                    info.access_token = String.valueOf(bundle.get("access_token"));
+                    info.refresh_token = String.valueOf(bundle.get("refresh_token"));
+                    info.expires_in = String.valueOf(bundle.get("expires_in"));
+                    info.uid = String.valueOf(bundle.get("uid"));
+                    info.remind_in = String.valueOf(bundle.get("remind_in"));
+                    authListener.onWeiboAuthSuccess(info);
+                } else {
+                    Log.d(TAG + " onWeiboAuthComplete but bundle is null");
+                }
             }
 
             @Override
