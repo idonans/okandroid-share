@@ -16,6 +16,8 @@ import com.tencent.tauth.UiError;
 
 import org.json.JSONObject;
 
+import java.util.UUID;
+
 /**
  * Created by idonans on 2017/2/4.
  */
@@ -51,7 +53,7 @@ public class AuthUtil {
 
         SendAuth.Req req = new SendAuth.Req();
         req.scope = "snsapi_userinfo";
-        req.state = shareHelper.getShareWeixinHelper().getState();
+        req.state = UUID.randomUUID().toString();
         api.sendReq(req);
         return true;
     }

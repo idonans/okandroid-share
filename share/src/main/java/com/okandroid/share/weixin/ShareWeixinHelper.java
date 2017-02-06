@@ -13,7 +13,6 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.util.UUID;
 
 /**
  * 微信登陆分享
@@ -23,7 +22,6 @@ public final class ShareWeixinHelper implements Closeable {
 
     private IWXAPI mApi;
     private IWXListenerAdapter mListener;
-    private final String mState;
 
     private static final GlobalWXAPIEventHandler sGlobalWXAPIEventHandler = new GlobalWXAPIEventHandler();
 
@@ -32,7 +30,6 @@ public final class ShareWeixinHelper implements Closeable {
         mApi.registerApp(ShareConfig.getWeixinAppKey());
         mListener = new IWXListenerAdapter();
         mListener.setOutListener(listener);
-        mState = UUID.randomUUID().toString();
     }
 
     public void resume() {
@@ -51,10 +48,6 @@ public final class ShareWeixinHelper implements Closeable {
         } else {
             return null;
         }
-    }
-
-    public String getState() {
-        return mState;
     }
 
     @Override
