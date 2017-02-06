@@ -160,7 +160,7 @@ public final class ShareWeiboHelper implements Closeable {
         }
     }
 
-    public static GlobalWeiboHandlerResponseAdapter getGlobalWeiboHandlerResponseAdapter() {
+    public static IWeiboHandler.Response getGlobalWeiboHandlerResponseAdapter() {
         return sGlobalWeiboHandlerResponseAdapter;
     }
 
