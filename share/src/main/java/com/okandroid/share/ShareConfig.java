@@ -11,7 +11,7 @@ public final class ShareConfig {
     private static String sQQAppId;
 
     private static String sWeixinAppKey;
-    private static String sWeixinAppSecrect;
+    private static String sWeixinAppSecret;
 
     private static String sWeiboAppKey;
     private static String sWeiboRedirectUrl;
@@ -20,7 +20,7 @@ public final class ShareConfig {
         sQQAppId = builder.mQQAppId;
 
         sWeixinAppKey = builder.mWeixinAppKey;
-        sWeixinAppSecrect = builder.mWeixinAppSecrect;
+        sWeixinAppSecret = builder.mWeixinAppSecret;
 
         sWeiboAppKey = builder.mWeiboAppKey;
         sWeiboRedirectUrl = builder.mWeiboRedirectUrl;
@@ -54,8 +54,8 @@ public final class ShareConfig {
         return sWeixinAppKey;
     }
 
-    public static String getWeixinAppSecrect() {
-        return sWeixinAppSecrect;
+    public static String getWeixinAppSecret() {
+        return sWeixinAppSecret;
     }
 
     public static final class Builder {
@@ -63,7 +63,7 @@ public final class ShareConfig {
 
         private String mWeixinAppKey;
         // 用 code 换取 access_token 时会用到
-        private String mWeixinAppSecrect;
+        private String mWeixinAppSecret;
 
         private String mWeiboAppKey;
         private String mWeiboRedirectUrl = "https://api.weibo.com/oauth2/default.html";
@@ -75,7 +75,7 @@ public final class ShareConfig {
 
         public Builder setWeixin(String appKey, String appSecret) {
             mWeixinAppKey = appKey;
-            mWeixinAppSecrect = appSecret;
+            mWeixinAppSecret = appSecret;
             return this;
         }
 
