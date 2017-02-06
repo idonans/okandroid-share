@@ -2,16 +2,23 @@ package com.sample.share.module.third.share;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 
+import com.okandroid.boot.AppContext;
 import com.okandroid.boot.lang.Log;
+import com.okandroid.boot.util.FileUtil;
 import com.okandroid.boot.util.IOUtil;
 import com.okandroid.boot.util.ViewUtil;
 import com.okandroid.share.ShareHelper;
 import com.okandroid.share.util.ShareUtil;
 import com.sample.share.R;
 import com.sample.share.app.BaseActivity;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * Created by idonans on 2017/2/4.
@@ -131,8 +138,41 @@ public class ThirdShareActivity extends BaseActivity {
 
         ShareUtil.WeiboShareContent shareContent = new ShareUtil.WeiboShareContent();
         shareContent.content = "weibo share content https://github.com/idonans/okandroid-share";
-        shareContent.image = null;
+        shareContent.image = createLocalShareImage();
         return ShareUtil.shareToWeibo(mShareHelper, shareContent);
+    }
+
+    private static synchronized String createLocalShareImage() {
+        Bitmap bitmap = BitmapFactory.decodeResource(AppContext.getContext().getResources(), R.mipmap.ic_launcher);
+
+        File targetFile = new File(FileUtil.getPublicDownloadDir(), "weibo_share_image_ic_launcher.jpg");
+        if (targetFile.exists() && targetFile.length() > 0) {
+            return targetFile.getAbsolutePath();
+        }
+
+        FileUtil.deleteFileQuietly(targetFile);
+
+        boolean createSuccess = false;
+        FileOutputStream fos = null;
+        try {
+            if (targetFile.createNewFile()) {
+                fos = new FileOutputStream(targetFile);
+                createSuccess = bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        } finally {
+            IOUtil.closeQuietly(fos);
+        }
+
+        if (createSuccess) {
+            if (targetFile.exists() && targetFile.length() > 0) {
+                return targetFile.getAbsolutePath();
+            }
+        }
+
+        FileUtil.deleteFileQuietly(targetFile);
+        return null;
     }
 
     private ShareHelper.IShareListener mShareListener = ShareUtil.newShareListener(new ShareUtil.ShareListener() {
