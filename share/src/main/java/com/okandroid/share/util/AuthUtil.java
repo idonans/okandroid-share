@@ -112,7 +112,7 @@ public class AuthUtil {
     }
 
     public static ShareHelper.IShareListener newAuthListener(final AuthListener authListener) {
-        final String TAG = "ShareUtil#newAuthListener";
+        final String TAG = "AuthUtil#newAuthListener";
 
         return new ShareHelper.IShareListener() {
             @Override
