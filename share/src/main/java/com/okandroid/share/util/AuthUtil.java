@@ -20,9 +20,9 @@ import org.json.JSONObject;
  * Created by idonans on 2017/2/4.
  */
 
-public class ShareUtil {
+public class AuthUtil {
 
-    private ShareUtil() {
+    private AuthUtil() {
     }
 
     public static boolean requestQQAuth(ShareHelper shareHelper) {

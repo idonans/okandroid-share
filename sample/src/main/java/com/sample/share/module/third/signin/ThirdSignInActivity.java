@@ -10,7 +10,7 @@ import com.okandroid.boot.lang.Log;
 import com.okandroid.boot.util.IOUtil;
 import com.okandroid.boot.util.ViewUtil;
 import com.okandroid.share.ShareHelper;
-import com.okandroid.share.util.ShareUtil;
+import com.okandroid.share.util.AuthUtil;
 import com.sample.share.R;
 import com.sample.share.app.BaseActivity;
 
@@ -88,7 +88,7 @@ public class ThirdSignInActivity extends BaseActivity {
             return false;
         }
 
-        return ShareUtil.requestQQAuth(mShareHelper);
+        return AuthUtil.requestQQAuth(mShareHelper);
     }
 
     private boolean signInWithWeixin() {
@@ -96,7 +96,7 @@ public class ThirdSignInActivity extends BaseActivity {
             return false;
         }
 
-        return ShareUtil.requestWeixinAuth(mShareHelper);
+        return AuthUtil.requestWeixinAuth(mShareHelper);
     }
 
     private boolean signInWithWeibo() {
@@ -104,15 +104,15 @@ public class ThirdSignInActivity extends BaseActivity {
             return false;
         }
 
-        return ShareUtil.requestWeiboAuth(mShareHelper);
+        return AuthUtil.requestWeiboAuth(mShareHelper);
     }
 
-    private ShareHelper.IShareListener mAuthListener = ShareUtil.newAuthListener(new ShareUtil.AuthListener() {
+    private ShareHelper.IShareListener mAuthListener = AuthUtil.newAuthListener(new AuthUtil.AuthListener() {
 
         private static final String TAG = "ThirdSignInActivity#mAuthListener";
 
         @Override
-        public void onQQAuthSuccess(@NonNull ShareUtil.QQAuthInfo info) {
+        public void onQQAuthSuccess(@NonNull AuthUtil.QQAuthInfo info) {
             Log.d(TAG + " onQQAuthSuccess access_token: " + info.access_token);
         }
 
@@ -142,7 +142,7 @@ public class ThirdSignInActivity extends BaseActivity {
         }
 
         @Override
-        public void onWeiboAuthSuccess(@NonNull ShareUtil.WeiboAuthInfo info) {
+        public void onWeiboAuthSuccess(@NonNull AuthUtil.WeiboAuthInfo info) {
             Log.d(TAG + " onWeiboAuthSuccess access_token: " + info.access_token);
         }
 
