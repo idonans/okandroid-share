@@ -34,9 +34,9 @@ public class ShareUtil {
          */
         public String image;
         /**
-         * 分享内容中显示 来自 appname
+         * 分享内容中显示 来自 appName
          */
-        public String appname;
+        public String appName;
     }
 
     private static Bundle toQQShareContent(QQShareContent shareContent) {
@@ -54,8 +54,8 @@ public class ShareUtil {
         if (!TextUtils.isEmpty(shareContent.image)) {
             bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, shareContent.image);
         }
-        if (!TextUtils.isEmpty(shareContent.appname)) {
-            bundle.putString(QQShare.SHARE_TO_QQ_APP_NAME, shareContent.appname);
+        if (!TextUtils.isEmpty(shareContent.appName)) {
+            bundle.putString(QQShare.SHARE_TO_QQ_APP_NAME, shareContent.appName);
         }
         return bundle;
     }

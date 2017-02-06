@@ -5,15 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.okandroid.boot.lang.Log;
 import com.okandroid.boot.util.IOUtil;
 import com.okandroid.boot.util.ViewUtil;
 import com.okandroid.share.ShareHelper;
+import com.okandroid.share.util.ShareUtil;
 import com.sample.share.R;
 import com.sample.share.app.BaseActivity;
-import com.sina.weibo.sdk.api.share.BaseResponse;
-import com.sina.weibo.sdk.exception.WeiboException;
-import com.tencent.mm.opensdk.modelbase.BaseResp;
-import com.tencent.tauth.UiError;
 
 /**
  * Created by idonans on 2017/2/4.
@@ -26,13 +24,12 @@ public class ThirdShareActivity extends BaseActivity {
         return starter;
     }
 
-
     private ShareHelper mShareHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mShareHelper = new ShareHelper(this, new ShareAdapter());
+        mShareHelper = new ShareHelper(this, mShareListener);
 
         setContentView(R.layout.sample_activity_third_share);
 
@@ -90,6 +87,13 @@ public class ThirdShareActivity extends BaseActivity {
             return false;
         }
 
+        ShareUtil.QQShareContent shareContent = new ShareUtil.QQShareContent();
+        shareContent.title = "qq share title";
+        shareContent.content = "qq share content";
+        shareContent.image = "https://avatars3.githubusercontent.com/u/4043830?v=3&s=460";
+        shareContent.targetUrl = "https://github.com/idonans/okandroid-share";
+        shareContent.appName = "okandroid";
+        ShareUtil.shareToQQ(mShareHelper, shareContent);
         return true;
     }
 
@@ -109,47 +113,54 @@ public class ThirdShareActivity extends BaseActivity {
         return true;
     }
 
-    private class ShareAdapter implements ShareHelper.IShareListener {
+    private ShareHelper.IShareListener mShareListener = ShareUtil.newShareListener(new ShareUtil.ShareListener() {
+
+        private static final String TAG = "ThirdShareActivity#mShareListener";
 
         @Override
-        public void onQQComplete(Object o) {
-
+        public void onQQShareSuccess() {
+            Log.d(TAG + " onQQShareSuccess");
         }
 
         @Override
-        public void onQQError(UiError uiError) {
-
+        public void onQQShareFail() {
+            Log.d(TAG + " onQQShareFail");
         }
 
         @Override
-        public void onQQCancel() {
-
+        public void onQQShareCancel() {
+            Log.d(TAG + " onQQShareCancel");
         }
 
         @Override
-        public void onWeixinCallback(BaseResp baseResp) {
-
+        public void onWeixinShareSuccess() {
+            Log.d(TAG + " onWeixinShareSuccess");
         }
 
         @Override
-        public void onWeiboAuthComplete(Bundle bundle) {
-
+        public void onWeixinShareFail() {
+            Log.d(TAG + " onWeixinShareFail");
         }
 
         @Override
-        public void onWeiboAuthException(WeiboException e) {
-
+        public void onWeixinShareCancel() {
+            Log.d(TAG + " onWeixinShareCancel");
         }
 
         @Override
-        public void onWeiboAuthCancel() {
-
+        public void onWeiboShareSuccess() {
+            Log.d(TAG + " onWeiboShareSuccess");
         }
 
         @Override
-        public void onWeiboShareCallback(BaseResponse baseResponse) {
-
+        public void onWeiboShareFail() {
+            Log.d(TAG + " onWeiboShareFail");
         }
-    }
+
+        @Override
+        public void onWeiboShareCancel() {
+            Log.d(TAG + " onWeiboShareCancel");
+        }
+    });
 
 }
