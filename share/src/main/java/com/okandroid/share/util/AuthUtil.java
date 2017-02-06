@@ -184,7 +184,7 @@ public class AuthUtil {
 
             @Override
             public void onWeiboShareCallback(BaseResponse baseResponse) {
-                // ignore
+                Log.d(TAG + " onWeiboShareCallback always ignore here");
             }
         };
     }
