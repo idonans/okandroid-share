@@ -2,6 +2,8 @@ package com.sample.share.module.third.share;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 
@@ -12,6 +14,8 @@ import com.okandroid.share.ShareHelper;
 import com.okandroid.share.util.ShareUtil;
 import com.sample.share.R;
 import com.sample.share.app.BaseActivity;
+
+import java.io.ByteArrayOutputStream;
 
 /**
  * Created by idonans on 2017/2/4.
@@ -109,8 +113,8 @@ public class ThirdShareActivity extends BaseActivity {
         }
 
         ShareUtil.QzoneShareContent shareContent = new ShareUtil.QzoneShareContent();
-        shareContent.title = "qq share title";
-        shareContent.content = "qq share content";
+        shareContent.title = "qzone share title";
+        shareContent.content = "qzone share content";
         shareContent.image = "https://avatars3.githubusercontent.com/u/4043830?v=3&s=460";
         shareContent.targetUrl = "https://github.com/idonans/okandroid-share";
         return ShareUtil.shareToQzone(mShareHelper, shareContent);
@@ -129,7 +133,27 @@ public class ThirdShareActivity extends BaseActivity {
             return false;
         }
 
-        return true;
+        ShareUtil.WeiboShareContent shareContent = new ShareUtil.WeiboShareContent();
+        shareContent.title = "weibo share title";
+        shareContent.content = "weibo share content";
+        shareContent.image = getShareImageBytes();
+        shareContent.targetUrl = "https://github.com/idonans/okandroid-share";
+        return ShareUtil.shareToWeibo(mShareHelper, shareContent);
+    }
+
+    private byte[] getShareImageBytes() {
+        ByteArrayOutputStream baos = null;
+        try {
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+            baos = new ByteArrayOutputStream();
+            if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)) {
+                return baos.toByteArray();
+            } else {
+                throw new RuntimeException("fail to compress bitmap");
+            }
+        } finally {
+            IOUtil.closeQuietly(baos);
+        }
     }
 
     private ShareHelper.IShareListener mShareListener = ShareUtil.newShareListener(new ShareUtil.ShareListener() {
