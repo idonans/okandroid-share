@@ -2,8 +2,6 @@ package com.sample.share.module.third.share;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 
@@ -14,8 +12,6 @@ import com.okandroid.share.ShareHelper;
 import com.okandroid.share.util.ShareUtil;
 import com.sample.share.R;
 import com.sample.share.app.BaseActivity;
-
-import java.io.ByteArrayOutputStream;
 
 /**
  * Created by idonans on 2017/2/4.
@@ -134,26 +130,9 @@ public class ThirdShareActivity extends BaseActivity {
         }
 
         ShareUtil.WeiboShareContent shareContent = new ShareUtil.WeiboShareContent();
-        shareContent.title = "weibo share title";
-        shareContent.content = "weibo share content";
-        shareContent.image = getShareImageBytes();
-        shareContent.targetUrl = "https://github.com/idonans/okandroid-share";
+        shareContent.content = "weibo share content https://github.com/idonans/okandroid-share";
+        shareContent.image = null;
         return ShareUtil.shareToWeibo(mShareHelper, shareContent);
-    }
-
-    private byte[] getShareImageBytes() {
-        ByteArrayOutputStream baos = null;
-        try {
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-            baos = new ByteArrayOutputStream();
-            if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)) {
-                return baos.toByteArray();
-            } else {
-                throw new RuntimeException("fail to compress bitmap");
-            }
-        } finally {
-            IOUtil.closeQuietly(baos);
-        }
     }
 
     private ShareHelper.IShareListener mShareListener = ShareUtil.newShareListener(new ShareUtil.ShareListener() {

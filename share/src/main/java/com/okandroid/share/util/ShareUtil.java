@@ -5,11 +5,12 @@ import android.text.TextUtils;
 
 import com.okandroid.boot.lang.Log;
 import com.okandroid.share.ShareHelper;
-import com.sina.weibo.sdk.api.WebpageObject;
-import com.sina.weibo.sdk.api.WeiboMessage;
+import com.sina.weibo.sdk.api.ImageObject;
+import com.sina.weibo.sdk.api.TextObject;
+import com.sina.weibo.sdk.api.WeiboMultiMessage;
 import com.sina.weibo.sdk.api.share.BaseResponse;
 import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
-import com.sina.weibo.sdk.api.share.SendMessageToWeiboRequest;
+import com.sina.weibo.sdk.api.share.SendMultiMessageToWeiboRequest;
 import com.sina.weibo.sdk.constant.WBConstants;
 import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.utils.Utility;
@@ -134,34 +135,28 @@ public class ShareUtil {
 
     public static class WeiboShareContent {
 
-        public String title;
         public String content;
+
         /**
-         * 点击链接
+         * 分享的图片，本地地址(本地图片有尺寸限制)
          */
-        public String targetUrl;
-        /**
-         * jpeg 格式, 不能超过 32k
-         */
-        public byte[] image;
+        public String image;
     }
 
-    private static WebpageObject convertWeiboShareContent(WeiboShareContent shareContent) {
-        WebpageObject mediaObject = new WebpageObject();
-        mediaObject.identify = Utility.generateGUID();
-        if (!TextUtils.isEmpty(shareContent.title)) {
-            mediaObject.title = shareContent.title;
-        }
+    private static WeiboMultiMessage convertWeiboShareContent(WeiboShareContent shareContent) {
+        WeiboMultiMessage multiMessage = new WeiboMultiMessage();
+
         if (!TextUtils.isEmpty(shareContent.content)) {
-            mediaObject.description = shareContent.content;
+            multiMessage.textObject = new TextObject();
+            multiMessage.textObject.text = shareContent.content;
         }
-        if (!TextUtils.isEmpty(shareContent.targetUrl)) {
-            mediaObject.actionUrl = shareContent.targetUrl;
+
+        if (!TextUtils.isEmpty(shareContent.image)) {
+            multiMessage.imageObject = new ImageObject();
+            multiMessage.imageObject.imagePath = shareContent.image;
         }
-        if (shareContent.image != null && shareContent.image.length > 0) {
-            mediaObject.thumbData = shareContent.image;
-        }
-        return mediaObject;
+
+        return multiMessage;
     }
 
     public static boolean shareToWeibo(ShareHelper shareHelper, WeiboShareContent shareContent) {
@@ -178,11 +173,9 @@ public class ShareUtil {
             return false;
         }
 
-        WeiboMessage weiboMessage = new WeiboMessage();
-        weiboMessage.mediaObject = convertWeiboShareContent(shareContent);
-        SendMessageToWeiboRequest request = new SendMessageToWeiboRequest();
+        SendMultiMessageToWeiboRequest request = new SendMultiMessageToWeiboRequest();
         request.transaction = Utility.generateGUID();
-        request.message = weiboMessage;
+        request.multiMessage = convertWeiboShareContent(shareContent);
         return api.sendRequest(shareHelper.getActivity(), request);
     }
 
