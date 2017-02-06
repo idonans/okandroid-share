@@ -2,6 +2,9 @@ package com.okandroid.share;
 
 import android.text.TextUtils;
 
+import com.okandroid.boot.App;
+import com.sina.weibo.sdk.utils.LogUtil;
+
 /**
  * 配置第三方平台参数, 在 App 入口处配置. 通常只需要在主进程 (ui 所在进程) 中配置.
  * Created by idonans on 2017/2/4.
@@ -24,6 +27,10 @@ public final class ShareConfig {
 
         sWeiboAppKey = builder.mWeiboAppKey;
         sWeiboRedirectUrl = builder.mWeiboRedirectUrl;
+
+        if (App.getBuildConfigAdapter().isDebug()) {
+            LogUtil.enableLog();
+        }
     }
 
     public static boolean hasConfigQQ() {
