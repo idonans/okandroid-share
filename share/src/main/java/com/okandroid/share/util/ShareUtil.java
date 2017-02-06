@@ -138,7 +138,7 @@ public class ShareUtil {
         public String content;
 
         /**
-         * 分享的图片，本地地址(本地图片有尺寸限制)
+         * 分享的图片，本地地址(文件大小不能超过 10M)
          */
         public String image;
     }
