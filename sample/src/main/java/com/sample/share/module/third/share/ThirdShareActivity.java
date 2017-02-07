@@ -2,15 +2,14 @@ package com.sample.share.module.third.share;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.okandroid.boot.AppContext;
 import com.okandroid.boot.lang.Log;
-import com.okandroid.boot.util.FileUtil;
+import com.okandroid.boot.thread.Threads;
 import com.okandroid.boot.util.IOUtil;
+import com.okandroid.boot.util.ImageUtil;
 import com.okandroid.boot.util.ViewUtil;
 import com.okandroid.share.ShareHelper;
 import com.okandroid.share.util.ShareUtil;
@@ -18,7 +17,6 @@ import com.sample.share.R;
 import com.sample.share.app.BaseActivity;
 
 import java.io.File;
-import java.io.FileOutputStream;
 
 /**
  * Created by idonans on 2017/2/4.
@@ -31,6 +29,7 @@ public class ThirdShareActivity extends BaseActivity {
         return starter;
     }
 
+    private static final String TAG = "ThirdShareActivity";
     private ShareHelper mShareHelper;
 
     @Override
@@ -136,43 +135,37 @@ public class ThirdShareActivity extends BaseActivity {
             return false;
         }
 
-        ShareUtil.WeiboShareContent shareContent = new ShareUtil.WeiboShareContent();
-        shareContent.content = "weibo share content https://github.com/idonans/okandroid-share";
-        shareContent.image = createLocalShareImage();
-        return ShareUtil.shareToWeibo(mShareHelper, shareContent);
+        // 此处只是一个示例，实际生产中需要处理内存泄露(网络请求过程中携带了当前 Activity 对象)
+        final String imageUrl = "https://avatars3.githubusercontent.com/u/4043830?v=3&s=460";
+        ImageUtil.cacheImageWithFresco(imageUrl, new ImageUtil.ImageFileFetchListener() {
+            @Override
+            public void onFileFetched(@Nullable File file) {
+                if (file != null && file.exists() && file.length() > 0) {
+                    final String localImagePath = file.getAbsolutePath();
+                    Threads.runOnUi(new Runnable() {
+                        @Override
+                        public void run() {
+                            shareWithWeibo(localImagePath);
+                        }
+                    });
+                } else {
+                    Log.d(TAG + " shareWithWeibo fail to load network image to local");
+                }
+            }
+        });
+
+        return true;
     }
 
-    private static synchronized String createLocalShareImage() {
-        Bitmap bitmap = BitmapFactory.decodeResource(AppContext.getContext().getResources(), R.mipmap.ic_launcher);
-
-        File targetFile = new File(FileUtil.getPublicDownloadDir(), "weibo_share_image_ic_launcher.jpg");
-        if (targetFile.exists() && targetFile.length() > 0) {
-            return targetFile.getAbsolutePath();
+    private boolean shareWithWeibo(String localImagePath) {
+        if (!isAppCompatResumed()) {
+            return false;
         }
 
-        FileUtil.deleteFileQuietly(targetFile);
-
-        boolean createSuccess = false;
-        FileOutputStream fos = null;
-        try {
-            if (targetFile.createNewFile()) {
-                fos = new FileOutputStream(targetFile);
-                createSuccess = bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        } finally {
-            IOUtil.closeQuietly(fos);
-        }
-
-        if (createSuccess) {
-            if (targetFile.exists() && targetFile.length() > 0) {
-                return targetFile.getAbsolutePath();
-            }
-        }
-
-        FileUtil.deleteFileQuietly(targetFile);
-        return null;
+        ShareUtil.WeiboShareContent shareContent = new ShareUtil.WeiboShareContent();
+        shareContent.content = "weibo share content https://github.com/idonans/okandroid-share";
+        shareContent.image = localImagePath;
+        return ShareUtil.shareToWeibo(mShareHelper, shareContent);
     }
 
     private ShareHelper.IShareListener mShareListener = ShareUtil.newShareListener(new ShareUtil.ShareListener() {
