@@ -10,13 +10,12 @@ android {
         targetSdkVersion 25
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
-        signingConfig signingConfigs.debug
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [thirdQQAppId: "1105599231"]
     }
 
     signingConfigs {
-        debug {
+        okandroid_debug {
             storeFile rootProject.file('debug_keystore.jks')
             storePassword property("debug_keystore.store_password")
             keyAlias property("debug_keystore.key_alias")
@@ -25,7 +24,12 @@ android {
     }
 
     buildTypes {
+        debug {
+            signingConfig signingConfigs.okandroid_debug
+            minifyEnabled false
+        }
         release {
+            signingConfig signingConfigs.okandroid_debug
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
