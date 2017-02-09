@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.okandroid.boot.lang.Log;
 import com.okandroid.boot.thread.Threads;
+import com.okandroid.boot.util.AvailableUtil;
 import com.okandroid.boot.util.IOUtil;
 import com.okandroid.boot.util.ImageUtil;
 import com.okandroid.boot.util.ViewUtil;
@@ -17,6 +18,7 @@ import com.sample.share.R;
 import com.sample.share.app.BaseActivity;
 
 import java.io.File;
+import java.io.FileInputStream;
 
 /**
  * Created by idonans on 2017/2/4.
@@ -127,7 +129,52 @@ public class ThirdShareActivity extends BaseActivity {
             return false;
         }
 
+        // 此处只是一个示例，实际生产中需要处理内存泄露(网络请求过程中携带了当前 Activity 对象)
+        final String imageUrl = "https://avatars3.githubusercontent.com/u/4043830?v=3&s=460";
+        ImageUtil.cacheImageWithFresco(imageUrl, new ImageUtil.ImageFileFetchListener() {
+            @Override
+            public void onFileFetched(@Nullable File file) {
+                if (file != null && file.exists() && file.length() > 0) {
+                    final String localImagePath = file.getAbsolutePath();
+                    Threads.runOnUi(new Runnable() {
+                        @Override
+                        public void run() {
+                            shareWithWeixin(localImagePath);
+                        }
+                    });
+                } else {
+                    Log.d(TAG + " shareWithWeixin fail to load network image to local");
+                }
+            }
+        });
+
         return true;
+    }
+
+    private boolean shareWithWeixin(String localImagePath) {
+        if (!isAppCompatResumed()) {
+            return false;
+        }
+
+        ShareUtil.WeixinShareContent shareContent = new ShareUtil.WeixinShareContent();
+        shareContent.title = "weixin share title";
+        shareContent.content = "weixin share content";
+        shareContent.targetUrl = "https://github.com/idonans/okandroid-share";
+        shareContent.image = readAll(localImagePath);
+        return ShareUtil.shareToWeixin(mShareHelper, shareContent);
+    }
+
+    private static byte[] readAll(String localPath) {
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(localPath);
+            return IOUtil.readAll(fis, AvailableUtil.always(), null);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        } finally {
+            IOUtil.closeQuietly(fis);
+        }
+        return null;
     }
 
     private boolean shareWithWeibo() {
