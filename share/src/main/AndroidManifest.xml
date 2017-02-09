@@ -11,25 +11,37 @@
         android:supportsRtl="true">
         <activity android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        <activity android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
-            android:configChanges="keyboardHidden|orientation"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:noHistory="true"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
+        <activity android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
         <activity android:name="com.okandroid.share.weibo.ShareWeiboActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait">
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="true"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
         <activity android:name="${applicationId}.wxapi.WXEntryActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
-            android:noHistory="true"/>
+            android:noHistory="true"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
         <activity android:name="com.tencent.tauth.AuthActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -38,6 +50,7 @@
             </intent-filter>
         </activity>
         <receiver android:name="com.okandroid.share.weixin.ShareWeixinAppRegister"
+            android:exported="true"
             android:permission="com.tencent.mm.plugin.permission.SEND">
             <intent-filter>
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP"/>
