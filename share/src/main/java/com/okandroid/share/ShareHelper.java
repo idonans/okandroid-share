@@ -20,37 +20,6 @@ import java.io.Closeable;
 import java.io.IOException;
 
 /**
- * 使用 {@link ShareConfig} 配置必要的参数, 未配置参数的平台将不能使用.
- * <p>
- * <pre>
- * 使用时，还需要添加必要的配置
- * 在 Manifest 中正确的 package 下新建并添加声明
- *
- * 微信平台{@code
- *
- * <activity android:name="***.wxapi.WXEntryActivity" // extends ShareWXEntryActivity
- *     android:exported="true"
- *     android:noHistory="true">
- *     <intent-filter>
- *         <action android:name="android.intent.action.VIEW"/>
- *         <category android:name="android.intent.category.DEFAULT"/>
- *         <data android:scheme="***"/>
- *     </intent-filter>
- * </activity>}
- *
- * QQ 平台{@code
- *
- * <activity android:name="com.tencent.tauth.AuthActivity"
- *     android:exported="true"
- *     android:noHistory="true">
- *     <intent-filter>
- *         <action android:name="android.intent.action.VIEW"/>
- *         <category android:name="android.intent.category.DEFAULT"/>
- *         <category android:name="android.intent.category.BROWSABLE"/>
- *         <data android:scheme="tencent***"/>
- *     </intent-filter>
- * </activity>}
- * </pre>
  * Created by idonans on 2017/2/4.
  */
 public class ShareHelper implements Closeable {
