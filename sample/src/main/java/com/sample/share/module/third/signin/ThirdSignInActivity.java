@@ -127,8 +127,8 @@ public class ThirdSignInActivity extends BaseActivity {
         }
 
         @Override
-        public void onWeixinAuthSuccess() {
-            Log.d(TAG + " onWeixinAuthSuccess");
+        public void onWeixinAuthSuccess(@NonNull AuthUtil.WeixinAuthInfo info) {
+            Log.d(TAG + " onWeixinAuthSuccess code: " + info.code + ", openId: " + info.openId);
         }
 
         @Override

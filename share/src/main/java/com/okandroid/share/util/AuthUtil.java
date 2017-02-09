@@ -78,7 +78,7 @@ public class AuthUtil {
 
         void onQQAuthCancel();
 
-        void onWeixinAuthSuccess();
+        void onWeixinAuthSuccess(@NonNull WeixinAuthInfo info);
 
         void onWeixinAuthFail();
 
@@ -103,6 +103,11 @@ public class AuthUtil {
         public String msg;
         public String login_cost;
         public String access_token;
+    }
+
+    public static class WeixinAuthInfo {
+        public String code;
+        public String openId;
     }
 
     public static class WeiboAuthInfo {
@@ -156,7 +161,26 @@ public class AuthUtil {
 
             @Override
             public void onWeixinCallback(BaseResp baseResp) {
-                // TODO
+                if (baseResp instanceof SendAuth.Resp) {
+                    SendAuth.Resp authResp = (SendAuth.Resp) baseResp;
+                    switch (authResp.errCode) {
+                        case SendAuth.Resp.ErrCode.ERR_OK: {
+                            WeixinAuthInfo info = new WeixinAuthInfo();
+                            info.code = authResp.code;
+                            info.openId = authResp.openId;
+                            authListener.onWeixinAuthSuccess(info);
+                            break;
+                        }
+                        case SendAuth.Resp.ErrCode.ERR_USER_CANCEL: {
+                            authListener.onWeixinAuthCancel();
+                            break;
+                        }
+                        default: {
+                            authListener.onWeixinAuthFail();
+                            break;
+                        }
+                    }
+                }
             }
 
             @Override
