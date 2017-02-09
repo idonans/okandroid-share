@@ -130,7 +130,8 @@ public class ThirdShareActivity extends BaseActivity {
         }
 
         // 此处只是一个示例，实际生产中需要处理内存泄露(网络请求过程中携带了当前 Activity 对象)
-        final String imageUrl = "https://avatars3.githubusercontent.com/u/4043830?v=3&s=460";
+        // 图片大小不能超过 32k
+        final String imageUrl = "https://avatars3.githubusercontent.com/u/4043830?v=3&s=300";
         ImageUtil.cacheImageWithFresco(imageUrl, new ImageUtil.ImageFileFetchListener() {
             @Override
             public void onFileFetched(@Nullable File file) {
