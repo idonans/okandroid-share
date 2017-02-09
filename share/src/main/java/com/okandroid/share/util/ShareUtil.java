@@ -17,10 +17,15 @@ import com.sina.weibo.sdk.utils.Utility;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
 import com.tencent.mm.sdk.modelbase.BaseResp;
+import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
+import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by idonans on 2017/2/6.
@@ -131,6 +136,51 @@ public class ShareUtil {
 
         tencent.shareToQzone(shareHelper.getActivity(), convertQzoneShareContent(shareContent), shareHelper.getShareQQHelper().getListener());
         return true;
+    }
+
+    public static class WeixinShareContent {
+        public String title;
+        public String content;
+        /**
+         * 点击链接
+         */
+        public String targetUrl;
+        /**
+         * 缩略图 不大于24k
+         */
+        public byte[] image;
+    }
+
+    private static WXMediaMessage covertWeixinShareContent(WeixinShareContent shareContent) {
+        WXWebpageObject webpageObject = new WXWebpageObject();
+        webpageObject.webpageUrl = shareContent.targetUrl;
+
+        WXMediaMessage mediaMessage = new WXMediaMessage(webpageObject);
+        mediaMessage.title = shareContent.title;
+        mediaMessage.description = shareContent.content;
+        mediaMessage.thumbData = shareContent.image;
+        return mediaMessage;
+    }
+
+    public static boolean shareToWeixin(ShareHelper shareHelper, WeixinShareContent shareContent) {
+        if (shareHelper == null) {
+            return false;
+        }
+
+        if (shareContent == null) {
+            return false;
+        }
+
+        IWXAPI api = shareHelper.getShareWeixinHelper().getApi();
+        if (api == null) {
+            return false;
+        }
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = UUID.randomUUID().toString();
+        req.message = covertWeixinShareContent(shareContent);
+        req.scene = SendMessageToWX.Req.WXSceneSession;
+        return api.sendReq(req);
     }
 
     public static class WeiboShareContent {
