@@ -275,7 +275,23 @@ public class ShareUtil {
 
             @Override
             public void onWeixinCallback(BaseResp baseResp) {
-                // TODO
+                if (baseResp instanceof SendMessageToWX.Resp) {
+                    SendMessageToWX.Resp shareResp = (SendMessageToWX.Resp) baseResp;
+                    switch (shareResp.errCode) {
+                        case SendMessageToWX.Resp.ErrCode.ERR_OK: {
+                            shareListener.onWeixinShareSuccess();
+                            break;
+                        }
+                        case SendMessageToWX.Resp.ErrCode.ERR_USER_CANCEL: {
+                            shareListener.onWeixinShareCancel();
+                            break;
+                        }
+                        default: {
+                            shareListener.onWeixinShareFail();
+                            break;
+                        }
+                    }
+                }
             }
 
             @Override
