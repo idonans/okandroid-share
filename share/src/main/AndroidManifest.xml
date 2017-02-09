@@ -24,6 +24,19 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+        <activity android:name="${applicationId}.wxapi.WXEntryActivity"
+            android:exported="true"
+            android:noHistory="true"/>
+        <activity android:name="com.tencent.tauth.AuthActivity"
+            android:exported="true"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="tencent${thirdQQAppId}"/>
+            </intent-filter>
+        </activity>
         <receiver android:name="com.okandroid.share.weixin.ShareWeixinAppRegister"
             android:permission="com.tencent.mm.plugin.permission.SEND">
             <intent-filter>

@@ -20,18 +20,5 @@
             android:exported="false"/>
         <activity android:name="com.sample.share.module.third.share.ThirdShareActivity"
             android:exported="false"/>
-        <activity android:name="com.sample.share.wxapi.WXEntryActivity"
-            android:exported="true"
-            android:noHistory="true"/>
-        <activity android:name="com.tencent.tauth.AuthActivity"
-            android:exported="true"
-            android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="tencent1105599231"/>
-            </intent-filter>
-        </activity>
     </application>
 </manifest>
