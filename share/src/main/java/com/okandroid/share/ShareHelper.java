@@ -12,7 +12,7 @@ import com.okandroid.share.weixin.ShareWeixinHelper;
 import com.sina.weibo.sdk.api.share.BaseResponse;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.exception.WeiboException;
-import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.UiError;
 

@@ -16,7 +16,7 @@ import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.utils.Utility;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
-import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
