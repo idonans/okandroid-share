@@ -16,16 +16,21 @@
         android:supportsRtl="true">
         <activity android:name="com.tencent.open.yyb.AppbarActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        <activity android:name="com.tencent.connect.avatar.ImageActivity"/>
+            android:screenOrientation="behind"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
+        <activity android:name="com.tencent.connect.avatar.ImageActivity"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
         <activity android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="behind"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
         <activity android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
-            android:noHistory="true">
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -51,7 +56,6 @@
         <activity android:name="${applicationId}.wxapi.WXEntryActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
-            android:noHistory="true"
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
         <receiver android:name="com.okandroid.share.weixin.ShareWeixinAppRegister"
