@@ -98,7 +98,7 @@ public class ShareUtil {
          */
         public String targetUrl;
         /**
-         * 分享的图片，只支持网络地址
+         * 分享的图片，仅支持网络地址
          */
         public String image;
     }
@@ -221,7 +221,7 @@ public class ShareUtil {
         public String content;
 
         /**
-         * 分享的图片，本地地址 (文件大小不能超过 10M)
+         * 分享的图片，仅支持本地地址 (文件大小不能超过 10M)
          */
         public String image;
     }

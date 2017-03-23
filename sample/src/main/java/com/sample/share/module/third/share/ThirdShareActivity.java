@@ -114,7 +114,8 @@ public class ThirdShareActivity extends BaseActivity {
         ShareUtil.QQShareContent shareContent = new ShareUtil.QQShareContent();
         shareContent.title = "qq share title";
         shareContent.content = "qq share content";
-        shareContent.image = "https://avatars3.githubusercontent.com/u/4043830?v=3&s=460";
+        // shareContent.image = "https://avatars3.githubusercontent.com/u/4043830?v=3&s=460";
+        shareContent.image = "/storage/emulated/0/launcher_bg.jpg";
         shareContent.targetUrl = "https://github.com/idonans/okandroid-share";
         return ShareUtil.shareToQQ(mShareHelper, shareContent);
     }
