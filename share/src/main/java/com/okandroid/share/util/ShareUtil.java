@@ -68,6 +68,9 @@ public class ShareUtil {
         return bundle;
     }
 
+    /**
+     * 分享到 QQ 好友
+     */
     public static boolean shareToQQ(ShareHelper shareHelper, QQShareContent shareContent) {
         if (shareHelper == null) {
             return false;
@@ -120,6 +123,9 @@ public class ShareUtil {
         return bundle;
     }
 
+    /**
+     * 分享到 QQ 空间
+     */
     public static boolean shareToQzone(ShareHelper shareHelper, QzoneShareContent shareContent) {
         if (shareHelper == null) {
             return false;
@@ -162,6 +168,9 @@ public class ShareUtil {
         return mediaMessage;
     }
 
+    /**
+     * 分享到微信好友
+     */
     public static boolean shareToWeixin(ShareHelper shareHelper, WeixinShareContent shareContent) {
         if (shareHelper == null) {
             return false;
@@ -180,6 +189,30 @@ public class ShareUtil {
         req.transaction = UUID.randomUUID().toString();
         req.message = covertWeixinShareContent(shareContent);
         req.scene = SendMessageToWX.Req.WXSceneSession;
+        return api.sendReq(req);
+    }
+
+    /**
+     * 分享到微信朋友圈
+     */
+    public static boolean shareToWeixinTimeline(ShareHelper shareHelper, WeixinShareContent shareContent) {
+        if (shareHelper == null) {
+            return false;
+        }
+
+        if (shareContent == null) {
+            return false;
+        }
+
+        IWXAPI api = shareHelper.getShareWeixinHelper().getApi();
+        if (api == null) {
+            return false;
+        }
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = UUID.randomUUID().toString();
+        req.message = covertWeixinShareContent(shareContent);
+        req.scene = SendMessageToWX.Req.WXSceneTimeline;
         return api.sendReq(req);
     }
 
@@ -209,6 +242,9 @@ public class ShareUtil {
         return multiMessage;
     }
 
+    /**
+     * 分享到微博
+     */
     public static boolean shareToWeibo(ShareHelper shareHelper, WeiboShareContent shareContent) {
         if (shareHelper == null) {
             return false;
