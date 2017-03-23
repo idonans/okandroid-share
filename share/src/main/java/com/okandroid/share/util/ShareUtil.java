@@ -45,7 +45,7 @@ public class ShareUtil {
          */
         public String targetUrl;
         /**
-         * 分享的图片，本地或者网络地址(本地图片有尺寸限制)
+         * 分享的图片，本地或者网络地址
          */
         public String image;
     }
@@ -95,7 +95,7 @@ public class ShareUtil {
          */
         public String targetUrl;
         /**
-         * 分享的图片，本地或者网络地址(本地图片有尺寸限制)
+         * 分享的图片，本地或者网络地址
          */
         public String image;
     }
@@ -146,7 +146,7 @@ public class ShareUtil {
          */
         public String targetUrl;
         /**
-         * 缩略图 不大于24k
+         * 缩略图 不大于 32k
          */
         public byte[] image;
     }
@@ -188,7 +188,7 @@ public class ShareUtil {
         public String content;
 
         /**
-         * 分享的图片，本地地址(文件大小不能超过 10M)
+         * 分享的图片，本地地址 (文件大小不能超过 10M)
          */
         public String image;
     }
