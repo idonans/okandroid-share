@@ -65,6 +65,14 @@ public class ThirdShareActivity extends BaseActivity {
             }
         });
 
+        final View shareWithWeixinTimeline = ViewUtil.findViewByID(this, R.id.weixin_timeline);
+        shareWithWeixinTimeline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareWithWeixinTimeline();
+            }
+        });
+
         View shareWithWeibo = ViewUtil.findViewByID(this, R.id.weibo);
         shareWithWeibo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,6 +171,47 @@ public class ThirdShareActivity extends BaseActivity {
         shareContent.targetUrl = "https://github.com/idonans/okandroid-share";
         shareContent.image = readAll(localImagePath);
         return ShareUtil.shareToWeixin(mShareHelper, shareContent);
+    }
+
+    private boolean shareWithWeixinTimeline() {
+        if (!isAppCompatResumed()) {
+            return false;
+        }
+
+        // 此处只是一个示例，实际生产中需要处理内存泄露(网络请求过程中携带了当前 Activity 对象)
+        // 图片大小不能超过 32k
+        final String imageUrl = "https://avatars3.githubusercontent.com/u/4043830?v=3&s=300";
+        ImageUtil.cacheImageWithFresco(imageUrl, new ImageUtil.ImageFileFetchListener() {
+            @Override
+            public void onFileFetched(@Nullable File file) {
+                if (file != null && file.exists() && file.length() > 0) {
+                    final String localImagePath = file.getAbsolutePath();
+                    Threads.runOnUi(new Runnable() {
+                        @Override
+                        public void run() {
+                            shareWithWeixinTimeline(localImagePath);
+                        }
+                    });
+                } else {
+                    Log.d(TAG + " shareWithWeixin fail to load network image to local");
+                }
+            }
+        });
+
+        return true;
+    }
+
+    private boolean shareWithWeixinTimeline(String localImagePath) {
+        if (!isAppCompatResumed()) {
+            return false;
+        }
+
+        ShareUtil.WeixinShareContent shareContent = new ShareUtil.WeixinShareContent();
+        shareContent.title = "weixin share title";
+        shareContent.content = "weixin share content";
+        shareContent.targetUrl = "https://github.com/idonans/okandroid-share";
+        shareContent.image = readAll(localImagePath);
+        return ShareUtil.shareToWeixinTimeline(mShareHelper, shareContent);
     }
 
     private static byte[] readAll(String localPath) {
