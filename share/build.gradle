@@ -1,14 +1,15 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion rootProject.ext.androidBuild.compileSdkVersion
+    buildToolsVersion rootProject.ext.androidBuild.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 25
-        versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
+        minSdkVersion rootProject.ext.androidBuild.minSdkVersion
+        targetSdkVersion rootProject.ext.androidBuild.targetSdkVersion
+        versionCode rootProject.ext.androidBuild.versionCode
+        versionName rootProject.ext.androidBuild.versionName
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [thirdQQAppId: "0"]
     }
@@ -25,7 +26,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.okandroid.boot:boot:0.5.12'
+    compile 'com.okandroid.boot:boot:0.7.1'
 }
 
 apply from: rootProject.file('gradle/jcenter_push.gradle')
