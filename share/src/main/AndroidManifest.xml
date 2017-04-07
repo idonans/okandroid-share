@@ -53,10 +53,16 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-        <activity android:name="${applicationId}.wxapi.WXEntryActivity"
+        <activity android:name="com.okandroid.share.weixin.ShareWXEntryActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
             android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
+        <activity-alias android:name="${applicationId}.wxapi.WXEntryActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="true"
+            android:screenOrientation="behind"
+            android:targetActivity="com.okandroid.share.weixin.ShareWXEntryActivity"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
         <receiver android:name="com.okandroid.share.weixin.ShareWeixinAppRegister"
             android:exported="true"
