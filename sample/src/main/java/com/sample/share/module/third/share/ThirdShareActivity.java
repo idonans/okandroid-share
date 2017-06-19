@@ -9,8 +9,9 @@ import android.view.View;
 import com.okandroid.boot.lang.Log;
 import com.okandroid.boot.thread.Threads;
 import com.okandroid.boot.util.AvailableUtil;
+import com.okandroid.boot.util.HumanUtil;
 import com.okandroid.boot.util.IOUtil;
-import com.okandroid.boot.util.ImageUtil;
+import com.okandroid.boot.util.ImageCacheUtil;
 import com.okandroid.boot.util.ViewUtil;
 import com.okandroid.share.ShareHelper;
 import com.okandroid.share.util.ShareUtil;
@@ -114,8 +115,7 @@ public class ThirdShareActivity extends BaseActivity {
         ShareUtil.QQShareContent shareContent = new ShareUtil.QQShareContent();
         shareContent.title = "qq share title";
         shareContent.content = "qq share content";
-        // shareContent.image = "https://avatars3.githubusercontent.com/u/4043830?v=3&s=460";
-        shareContent.image = "/storage/emulated/0/launcher_bg.jpg";
+        shareContent.image = "https://avatars3.githubusercontent.com/u/4043830?v=3&s=460";
         shareContent.targetUrl = "https://github.com/idonans/okandroid-share";
         return ShareUtil.shareToQQ(mShareHelper, shareContent);
     }
@@ -128,8 +128,7 @@ public class ThirdShareActivity extends BaseActivity {
         ShareUtil.QzoneShareContent shareContent = new ShareUtil.QzoneShareContent();
         shareContent.title = "qzone share title";
         shareContent.content = "qzone share content";
-        // shareContent.image = "https://avatars3.githubusercontent.com/u/4043830?v=3&s=460";
-        shareContent.image = "http:///storage/emulated/0/launcher_bg.jpg";
+        shareContent.image = "https://avatars3.githubusercontent.com/u/4043830?v=3&s=460";
         shareContent.targetUrl = "https://github.com/idonans/okandroid-share";
         return ShareUtil.shareToQzone(mShareHelper, shareContent);
     }
@@ -142,9 +141,9 @@ public class ThirdShareActivity extends BaseActivity {
         // 此处只是一个示例，实际生产中需要处理内存泄露(网络请求过程中携带了当前 Activity 对象)
         // 图片大小不能超过 32k
         final String imageUrl = "https://avatars3.githubusercontent.com/u/4043830?v=3&s=300";
-        ImageUtil.cacheImageWithFresco(imageUrl, new ImageUtil.ImageFileFetchListener() {
+        ImageCacheUtil.cacheImageThumb(imageUrl, 500, 500, 32 * HumanUtil.KB, new ImageCacheUtil.ImageCacheListener() {
             @Override
-            public void onFileFetched(@Nullable File file) {
+            public void onImageCached(@Nullable File file) {
                 if (file != null && file.exists() && file.length() > 0) {
                     final String localImagePath = file.getAbsolutePath();
                     Threads.runOnUi(new Runnable() {
@@ -158,7 +157,6 @@ public class ThirdShareActivity extends BaseActivity {
                 }
             }
         });
-
         return true;
     }
 
@@ -183,9 +181,9 @@ public class ThirdShareActivity extends BaseActivity {
         // 此处只是一个示例，实际生产中需要处理内存泄露(网络请求过程中携带了当前 Activity 对象)
         // 图片大小不能超过 32k
         final String imageUrl = "https://avatars3.githubusercontent.com/u/4043830?v=3&s=300";
-        ImageUtil.cacheImageWithFresco(imageUrl, new ImageUtil.ImageFileFetchListener() {
+        ImageCacheUtil.cacheImageThumb(imageUrl, 500, 500, 32 * HumanUtil.KB, new ImageCacheUtil.ImageCacheListener() {
             @Override
-            public void onFileFetched(@Nullable File file) {
+            public void onImageCached(@Nullable File file) {
                 if (file != null && file.exists() && file.length() > 0) {
                     final String localImagePath = file.getAbsolutePath();
                     Threads.runOnUi(new Runnable() {
@@ -199,7 +197,6 @@ public class ThirdShareActivity extends BaseActivity {
                 }
             }
         });
-
         return true;
     }
 
@@ -236,9 +233,9 @@ public class ThirdShareActivity extends BaseActivity {
 
         // 此处只是一个示例，实际生产中需要处理内存泄露(网络请求过程中携带了当前 Activity 对象)
         final String imageUrl = "https://avatars3.githubusercontent.com/u/4043830?v=3&s=460";
-        ImageUtil.cacheImageWithFresco(imageUrl, new ImageUtil.ImageFileFetchListener() {
+        ImageCacheUtil.cacheImageThumb(imageUrl, 500, 500, 32 * HumanUtil.KB, new ImageCacheUtil.ImageCacheListener() {
             @Override
-            public void onFileFetched(@Nullable File file) {
+            public void onImageCached(@Nullable File file) {
                 if (file != null && file.exists() && file.length() > 0) {
                     final String localImagePath = file.getAbsolutePath();
                     Threads.runOnUi(new Runnable() {
@@ -252,7 +249,6 @@ public class ThirdShareActivity extends BaseActivity {
                 }
             }
         });
-
         return true;
     }
 
