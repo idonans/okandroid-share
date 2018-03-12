@@ -12,16 +12,13 @@ import com.okandroid.share.weixin.ShareWeixinHelper;
 import com.sina.weibo.sdk.api.share.BaseResponse;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.exception.WeiboException;
-import com.tencent.mm.sdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.UiError;
 
 import java.io.Closeable;
 import java.io.IOException;
 
-/**
- * Created by idonans on 2017/2/4.
- */
 public class ShareHelper implements Closeable {
 
     private Activity mActivity;
@@ -41,9 +38,11 @@ public class ShareHelper implements Closeable {
         }
 
         if (ShareConfig.hasConfigWeibo()) {
-            mShareWeiboHelper = new ShareWeiboHelper(activity,
-                    new IShareWeiboAuthListenerAdapter(listener),
-                    new IShareWeiboShareListenerAdapter(listener));
+            mShareWeiboHelper =
+                    new ShareWeiboHelper(
+                            activity,
+                            new IShareWeiboAuthListenerAdapter(listener),
+                            new IShareWeiboShareListenerAdapter(listener));
         }
     }
 
@@ -95,8 +94,7 @@ public class ShareHelper implements Closeable {
 
     private static class IShareQQUiListenerAdapter implements IUiListener {
 
-        @NonNull
-        private final IShareListener mOutListener;
+        @NonNull private final IShareListener mOutListener;
 
         private IShareQQUiListenerAdapter(@NonNull IShareListener outListener) {
             mOutListener = outListener;
@@ -120,8 +118,7 @@ public class ShareHelper implements Closeable {
 
     private static class IShareWeixinListenerAdapter implements ShareWeixinHelper.IWXListener {
 
-        @NonNull
-        private final IShareListener mOutListener;
+        @NonNull private final IShareListener mOutListener;
 
         private IShareWeixinListenerAdapter(@NonNull IShareListener outListener) {
             mOutListener = outListener;
@@ -135,8 +132,7 @@ public class ShareHelper implements Closeable {
 
     private static class IShareWeiboAuthListenerAdapter implements WeiboAuthListener {
 
-        @NonNull
-        private final IShareListener mOutListener;
+        @NonNull private final IShareListener mOutListener;
 
         private IShareWeiboAuthListenerAdapter(@NonNull IShareListener outListener) {
             mOutListener = outListener;
@@ -158,10 +154,10 @@ public class ShareHelper implements Closeable {
         }
     }
 
-    private static class IShareWeiboShareListenerAdapter implements ShareWeiboHelper.WeiboShareListener {
+    private static class IShareWeiboShareListenerAdapter
+            implements ShareWeiboHelper.WeiboShareListener {
 
-        @NonNull
-        private final IShareListener mOutListener;
+        @NonNull private final IShareListener mOutListener;
 
         private IShareWeiboShareListenerAdapter(@NonNull IShareListener outListener) {
             mOutListener = outListener;
@@ -191,7 +187,6 @@ public class ShareHelper implements Closeable {
 
         void onWeiboShareCallback(BaseResponse baseResponse);
     }
-
 
     public static class SimpleIShareListener implements IShareListener {
 
@@ -235,5 +230,4 @@ public class ShareHelper implements Closeable {
             // ignore
         }
     }
-
 }

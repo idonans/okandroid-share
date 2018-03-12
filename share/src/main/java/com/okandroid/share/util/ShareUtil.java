@@ -16,37 +16,29 @@ import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.utils.Utility;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
-import com.tencent.mm.sdk.modelbase.BaseResp;
-import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
-import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
-import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
-import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject;
+import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-/**
- * Created by idonans on 2017/2/6.
- */
-
 public class ShareUtil {
 
-    private ShareUtil() {
-    }
+    private ShareUtil() {}
 
     public static class QQShareContent {
 
         public String title;
         public String content;
-        /**
-         * 点击链接
-         */
+        /** 点击链接 */
         public String targetUrl;
-        /**
-         * 分享的图片，本地或者网络地址
-         */
+        /** 分享的图片，本地或者网络地址 */
         public String image;
     }
 
@@ -68,9 +60,7 @@ public class ShareUtil {
         return bundle;
     }
 
-    /**
-     * 分享到 QQ 好友
-     */
+    /** 分享到 QQ 好友 */
     public static boolean shareToQQ(ShareHelper shareHelper, QQShareContent shareContent) {
         if (shareHelper == null) {
             return false;
@@ -85,7 +75,10 @@ public class ShareUtil {
             return false;
         }
 
-        tencent.shareToQQ(shareHelper.getActivity(), convertQQShareContent(shareContent), shareHelper.getShareQQHelper().getListener());
+        tencent.shareToQQ(
+                shareHelper.getActivity(),
+                convertQQShareContent(shareContent),
+                shareHelper.getShareQQHelper().getListener());
         return true;
     }
 
@@ -93,19 +86,16 @@ public class ShareUtil {
 
         public String title;
         public String content;
-        /**
-         * 点击链接
-         */
+        /** 点击链接 */
         public String targetUrl;
-        /**
-         * 分享的图片，仅支持网络地址
-         */
+        /** 分享的图片，仅支持网络地址 */
         public String image;
     }
 
     private static Bundle convertQzoneShareContent(QzoneShareContent shareContent) {
         Bundle bundle = new Bundle();
-        bundle.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
+        bundle.putInt(
+                QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
         if (!TextUtils.isEmpty(shareContent.title)) {
             bundle.putString(QzoneShare.SHARE_TO_QQ_TITLE, shareContent.title);
         }
@@ -123,9 +113,7 @@ public class ShareUtil {
         return bundle;
     }
 
-    /**
-     * 分享到 QQ 空间
-     */
+    /** 分享到 QQ 空间 */
     public static boolean shareToQzone(ShareHelper shareHelper, QzoneShareContent shareContent) {
         if (shareHelper == null) {
             return false;
@@ -140,20 +128,19 @@ public class ShareUtil {
             return false;
         }
 
-        tencent.shareToQzone(shareHelper.getActivity(), convertQzoneShareContent(shareContent), shareHelper.getShareQQHelper().getListener());
+        tencent.shareToQzone(
+                shareHelper.getActivity(),
+                convertQzoneShareContent(shareContent),
+                shareHelper.getShareQQHelper().getListener());
         return true;
     }
 
     public static class WeixinShareContent {
         public String title;
         public String content;
-        /**
-         * 点击链接
-         */
+        /** 点击链接 */
         public String targetUrl;
-        /**
-         * 缩略图 不大于 32k
-         */
+        /** 缩略图 不大于 32k */
         public byte[] image;
     }
 
@@ -168,9 +155,7 @@ public class ShareUtil {
         return mediaMessage;
     }
 
-    /**
-     * 分享到微信好友
-     */
+    /** 分享到微信好友 */
     public static boolean shareToWeixin(ShareHelper shareHelper, WeixinShareContent shareContent) {
         if (shareHelper == null) {
             return false;
@@ -192,10 +177,58 @@ public class ShareUtil {
         return api.sendReq(req);
     }
 
-    /**
-     * 分享到微信朋友圈
-     */
-    public static boolean shareToWeixinTimeline(ShareHelper shareHelper, WeixinShareContent shareContent) {
+    public static class WeixinMiniProgramShareContent {
+        public String title;
+        public String content;
+        /** 低版本微信上兼容的网页链接地址 */
+        public String defaultTargetUrl;
+        /** 缩略图 不大于 128k */
+        public byte[] image;
+
+        public String miniProgramId;
+        public String miniProgramPath;
+    }
+
+    private static WXMediaMessage covertWeixinMiniProgrameShareContent(
+            WeixinMiniProgramShareContent shareContent) {
+        WXMiniProgramObject miniProgramObject = new WXMiniProgramObject();
+        miniProgramObject.webpageUrl = shareContent.defaultTargetUrl;
+        miniProgramObject.userName = shareContent.miniProgramId;
+        miniProgramObject.path = shareContent.miniProgramPath;
+
+        WXMediaMessage mediaMessage = new WXMediaMessage(miniProgramObject);
+        mediaMessage.title = shareContent.title;
+        mediaMessage.description = shareContent.content;
+        mediaMessage.thumbData = shareContent.image;
+        return mediaMessage;
+    }
+
+    /** 分享微信小程序到微信好友 */
+    public static boolean shareToWeixin(
+            ShareHelper shareHelper, WeixinMiniProgramShareContent shareContent) {
+        if (shareHelper == null) {
+            return false;
+        }
+
+        if (shareContent == null) {
+            return false;
+        }
+
+        IWXAPI api = shareHelper.getShareWeixinHelper().getApi();
+        if (api == null) {
+            return false;
+        }
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = UUID.randomUUID().toString();
+        req.message = covertWeixinMiniProgrameShareContent(shareContent);
+        req.scene = SendMessageToWX.Req.WXSceneSession;
+        return api.sendReq(req);
+    }
+
+    /** 分享到微信朋友圈 */
+    public static boolean shareToWeixinTimeline(
+            ShareHelper shareHelper, WeixinShareContent shareContent) {
         if (shareHelper == null) {
             return false;
         }
@@ -220,9 +253,7 @@ public class ShareUtil {
 
         public String content;
 
-        /**
-         * 分享的图片，仅支持本地地址 (文件大小不能超过 10M)
-         */
+        /** 分享的图片，仅支持本地地址 (文件大小不能超过 10M) */
         public String image;
     }
 
@@ -242,9 +273,7 @@ public class ShareUtil {
         return multiMessage;
     }
 
-    /**
-     * 分享到微博
-     */
+    /** 分享到微博 */
     public static boolean shareToWeibo(ShareHelper shareHelper, WeiboShareContent shareContent) {
         if (shareHelper == null) {
             return false;
@@ -299,7 +328,14 @@ public class ShareUtil {
                 if (uiError == null) {
                     Log.d(TAG + " onQQError uiError is null");
                 } else {
-                    Log.d(TAG + " onQQError " + uiError.errorCode + " " + uiError.errorMessage + " " + uiError.errorDetail);
+                    Log.d(
+                            TAG
+                                    + " onQQError "
+                                    + uiError.errorCode
+                                    + " "
+                                    + uiError.errorMessage
+                                    + " "
+                                    + uiError.errorDetail);
                 }
                 shareListener.onQQShareFail();
             }
@@ -314,18 +350,21 @@ public class ShareUtil {
                 if (baseResp instanceof SendMessageToWX.Resp) {
                     SendMessageToWX.Resp shareResp = (SendMessageToWX.Resp) baseResp;
                     switch (shareResp.errCode) {
-                        case SendMessageToWX.Resp.ErrCode.ERR_OK: {
-                            shareListener.onWeixinShareSuccess();
-                            break;
-                        }
-                        case SendMessageToWX.Resp.ErrCode.ERR_USER_CANCEL: {
-                            shareListener.onWeixinShareCancel();
-                            break;
-                        }
-                        default: {
-                            shareListener.onWeixinShareFail();
-                            break;
-                        }
+                        case SendMessageToWX.Resp.ErrCode.ERR_OK:
+                            {
+                                shareListener.onWeixinShareSuccess();
+                                break;
+                            }
+                        case SendMessageToWX.Resp.ErrCode.ERR_USER_CANCEL:
+                            {
+                                shareListener.onWeixinShareCancel();
+                                break;
+                            }
+                        default:
+                            {
+                                shareListener.onWeixinShareFail();
+                                break;
+                            }
                     }
                 }
             }
@@ -363,11 +402,13 @@ public class ShareUtil {
                         shareListener.onWeiboShareCancel();
                         break;
                     default:
-                        Log.d(TAG + " onWeiboShareCallback but baseResponse errCode invalid " + baseResponse.errCode);
+                        Log.d(
+                                TAG
+                                        + " onWeiboShareCallback but baseResponse errCode invalid "
+                                        + baseResponse.errCode);
                         break;
                 }
             }
         };
     }
-
 }

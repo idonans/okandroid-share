@@ -6,16 +6,13 @@ import android.os.Bundle;
 import com.okandroid.boot.AppContext;
 import com.okandroid.share.ShareConfig;
 import com.okandroid.share.app.ShareActivity;
-import com.tencent.mm.sdk.modelbase.BaseReq;
-import com.tencent.mm.sdk.modelbase.BaseResp;
-import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.tencent.mm.opensdk.modelbase.BaseReq;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
-/**
- * 与微信通信页
- * Created by idonans on 2017/2/4.
- */
+/** 与微信通信页 */
 public class ShareWXEntryActivity extends ShareActivity implements IWXAPIEventHandler {
 
     @Override
@@ -34,7 +31,9 @@ public class ShareWXEntryActivity extends ShareActivity implements IWXAPIEventHa
 
     private void handleIntent(Intent intent) {
         if (ShareConfig.hasConfigWeixin()) {
-            IWXAPI api = WXAPIFactory.createWXAPI(AppContext.getContext(), ShareConfig.getWeixinAppKey(), false);
+            IWXAPI api =
+                    WXAPIFactory.createWXAPI(
+                            AppContext.getContext(), ShareConfig.getWeixinAppKey(), false);
             api.handleIntent(intent, this);
         }
     }
@@ -48,5 +47,4 @@ public class ShareWXEntryActivity extends ShareActivity implements IWXAPIEventHa
     public void onResp(BaseResp baseResp) {
         ShareWeixinHelper.getGlobalWXAPIEventHandler().onResp(baseResp);
     }
-
 }

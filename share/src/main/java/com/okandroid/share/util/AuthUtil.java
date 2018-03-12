@@ -8,9 +8,9 @@ import com.okandroid.share.ShareHelper;
 import com.sina.weibo.sdk.api.share.BaseResponse;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
-import com.tencent.mm.sdk.modelbase.BaseResp;
-import com.tencent.mm.sdk.modelmsg.SendAuth;
-import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
@@ -18,14 +18,9 @@ import org.json.JSONObject;
 
 import java.util.UUID;
 
-/**
- * Created by idonans on 2017/2/4.
- */
-
 public class AuthUtil {
 
-    private AuthUtil() {
-    }
+    private AuthUtil() {}
 
     public static boolean requestQQAuth(ShareHelper shareHelper) {
         if (shareHelper == null) {
@@ -37,7 +32,10 @@ public class AuthUtil {
             return false;
         }
 
-        tencent.login(shareHelper.getActivity(), "get_simple_userinfo", shareHelper.getShareQQHelper().getListener());
+        tencent.login(
+                shareHelper.getActivity(),
+                "get_simple_userinfo",
+                shareHelper.getShareQQHelper().getListener());
         return true;
     }
 
@@ -149,7 +147,14 @@ public class AuthUtil {
                 if (uiError == null) {
                     Log.d(TAG + " onQQError uiError is null");
                 } else {
-                    Log.d(TAG + " onQQError " + uiError.errorCode + " " + uiError.errorMessage + " " + uiError.errorDetail);
+                    Log.d(
+                            TAG
+                                    + " onQQError "
+                                    + uiError.errorCode
+                                    + " "
+                                    + uiError.errorMessage
+                                    + " "
+                                    + uiError.errorDetail);
                 }
                 authListener.onQQAuthFail();
             }
@@ -164,21 +169,24 @@ public class AuthUtil {
                 if (baseResp instanceof SendAuth.Resp) {
                     SendAuth.Resp authResp = (SendAuth.Resp) baseResp;
                     switch (authResp.errCode) {
-                        case SendAuth.Resp.ErrCode.ERR_OK: {
-                            WeixinAuthInfo info = new WeixinAuthInfo();
-                            info.code = authResp.code;
-                            info.openId = authResp.openId;
-                            authListener.onWeixinAuthSuccess(info);
-                            break;
-                        }
-                        case SendAuth.Resp.ErrCode.ERR_USER_CANCEL: {
-                            authListener.onWeixinAuthCancel();
-                            break;
-                        }
-                        default: {
-                            authListener.onWeixinAuthFail();
-                            break;
-                        }
+                        case SendAuth.Resp.ErrCode.ERR_OK:
+                            {
+                                WeixinAuthInfo info = new WeixinAuthInfo();
+                                info.code = authResp.code;
+                                info.openId = authResp.openId;
+                                authListener.onWeixinAuthSuccess(info);
+                                break;
+                            }
+                        case SendAuth.Resp.ErrCode.ERR_USER_CANCEL:
+                            {
+                                authListener.onWeixinAuthCancel();
+                                break;
+                            }
+                        default:
+                            {
+                                authListener.onWeixinAuthFail();
+                                break;
+                            }
                     }
                 }
             }
@@ -214,5 +222,4 @@ public class AuthUtil {
             }
         };
     }
-
 }

@@ -5,28 +5,28 @@ import android.support.annotation.CheckResult;
 import com.okandroid.boot.AppContext;
 import com.okandroid.boot.lang.Log;
 import com.okandroid.share.ShareConfig;
-import com.tencent.mm.sdk.modelbase.BaseReq;
-import com.tencent.mm.sdk.modelbase.BaseResp;
-import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.tencent.mm.opensdk.modelbase.BaseReq;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
 
-/**
- * 微信登陆分享
- * Created by idonans on 2017/2/4.
- */
+/** 微信登陆分享 */
 public final class ShareWeixinHelper implements Closeable {
 
     private IWXAPI mApi;
     private IWXListenerAdapter mListener;
 
-    private static final GlobalWXAPIEventHandler sGlobalWXAPIEventHandler = new GlobalWXAPIEventHandler();
+    private static final GlobalWXAPIEventHandler sGlobalWXAPIEventHandler =
+            new GlobalWXAPIEventHandler();
 
     public ShareWeixinHelper(IWXListener listener) {
-        mApi = WXAPIFactory.createWXAPI(AppContext.getContext(), ShareConfig.getWeixinAppKey(), false);
+        mApi =
+                WXAPIFactory.createWXAPI(
+                        AppContext.getContext(), ShareConfig.getWeixinAppKey(), false);
         mApi.registerApp(ShareConfig.getWeixinAppKey());
         mListener = new IWXListenerAdapter();
         mListener.setOutListener(listener);
@@ -109,5 +109,4 @@ public final class ShareWeixinHelper implements Closeable {
             }
         }
     }
-
 }

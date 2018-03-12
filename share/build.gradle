@@ -27,6 +27,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.okandroid.boot:boot:1.0.31'
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.1.4'
 }
 
 apply from: rootProject.file('gradle/jcenter_push.gradle')
