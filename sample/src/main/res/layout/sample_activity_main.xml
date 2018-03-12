@@ -2,18 +2,25 @@
 <com.okandroid.boot.widget.ContentView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/okandroid_status_bar_height"
-        android:orientation="vertical"
-        android:padding="10dp">
-        <Button android:id="@+id/sign_in"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="第三方登录测试"/>
-        <Button android:id="@+id/share"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="第三方分享测试"/>
-    </LinearLayout>
+            android:orientation="vertical"
+            android:padding="10dp">
+            <Button
+                android:id="@+id/sign_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="第三方登录测试" />
+            <Button
+                android:id="@+id/share"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="第三方分享测试" />
+        </LinearLayout>
+    </FrameLayout>
 </com.okandroid.boot.widget.ContentView>

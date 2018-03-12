@@ -2,22 +2,30 @@
 <com.okandroid.boot.widget.ContentView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/okandroid_status_bar_height"
-        android:orientation="vertical"
-        android:padding="10dp">
-        <Button android:id="@+id/qq"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="sign in with QQ"/>
-        <Button android:id="@+id/weixin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="sign in with weixin"/>
-        <Button android:id="@+id/weibo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="sign in with weibo"/>
-    </LinearLayout>
+            android:orientation="vertical"
+            android:padding="10dp">
+            <Button
+                android:id="@+id/qq"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="sign in with QQ" />
+            <Button
+                android:id="@+id/weixin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="sign in with weixin" />
+            <Button
+                android:id="@+id/weibo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="sign in with weibo" />
+        </LinearLayout>
+    </FrameLayout>
 </com.okandroid.boot.widget.ContentView>
