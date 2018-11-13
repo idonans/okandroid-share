@@ -1,4 +1,5 @@
-# okandroid-share
+# *Deprecated*
+# ~~okandroid-share~~
 third platform sign in and share lib
 
 # how to use
